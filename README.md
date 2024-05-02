@@ -22,10 +22,12 @@ Our project is an e-commerce website developed to gain experience in teamwork an
 
 ## Contribution Guidelines
 ### Pull Requests
-- Every PR should be linked to a task from the task management system (Jira) to track progress
 - Every PR should contain a brief description of the changes made
 - All tests must be successfully passed before merging the PR
 - The code must be reviewed by at least one other team member before merging the PR
+
+### Jira Integration Guidelines
+- To ensure effective tracking of tasks, **every branch name and commit message should include the task key from Jira**. For example, if you're working on a task with the key "RSSECOM-1" for refactoring the readme file, your branch name could be "refactor/RSSECOM-1_00_readme" and your commit message could include the task key like this: "refactor: RSSECOM-1_00 change readme file"
 
 ### Commit Message
 - Each commit should have a clear and informative message describing the essence of the changes
