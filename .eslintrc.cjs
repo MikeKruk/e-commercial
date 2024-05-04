@@ -27,4 +27,5 @@ module.exports = {
     'no-console': 'off',
     'no-debugger': 'off',
   },
+  ignorePatterns: ['vite.config.ts', 'test/setupTest.ts'],
 };
