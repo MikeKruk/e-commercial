@@ -35,6 +35,7 @@ typings/
 # Yarn Integrity file.yarn-integrity
 # dotenv environment variables file
 .env.env.test
+.env
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 # Next.js build output.next
@@ -54,3 +55,4 @@ typings/
 .DS_Store
 node_modules
 dist
+coverage
