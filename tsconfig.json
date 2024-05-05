@@ -22,6 +22,6 @@
 
     "types": ["vitest/globals"]
   },
-  "include": ["src", ".eslintrc.cjs", "test/setupTest.ts"],
+  "include": ["src", ".eslintrc.cjs", "vite.config.json"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
