@@ -45,5 +45,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['vite.config.ts', 'test/setupTest.ts'],
+  ignorePatterns: ['vite.config.ts', 'src/setupTest.ts'],
 };
