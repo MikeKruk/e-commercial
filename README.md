@@ -13,16 +13,32 @@ Our project is an e-commerce website developed to gain experience in teamwork an
 - Tailwind CSS
 - Handlebars
 - Vite
-- Additional technologies will be added later
 
 ## Installation
 
 ### Steps
 
-- Clone the repository: link
+- Clone the repository: [link](https://github.com/MikeKruk/e-commercial.git)
 - Install dependencies: `npm install`
 - Start the project in dev mode: `npm run dev`
 - Builds the project for deployment: `npm run build`
+
+## Scripts
+
+### ESLint and Prettier
+
+- Lint the project for code quality issues: `npm run lint`
+- Fix linting issues: `npm run lint:fix`
+- Check code formatting with Prettier: `npm run prettier`
+- Fix formatting issues: `npm run prettier:fix`
+- Format code and fix linting issues: `npm run format`
+- Husky is set up to run pre-commit hooks automatically, ensuring code quality before each commit
+
+
+### Testing
+
+- Run unit tests with coverage: `npm test`
+- Run UI tests: `npm run test:ui`
 
 ## Contribution Guidelines
 
