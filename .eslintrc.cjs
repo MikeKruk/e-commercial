@@ -45,5 +45,10 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['vite.config.ts', 'src/setupTest.ts'],
+  ignorePatterns: [
+    'vite.config.ts',
+    'src/setupTest.ts',
+    'postcss.config.js',
+    'tailwind.config.js',
+  ],
 };

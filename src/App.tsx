@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import useTypedSelector from './hooks/useTypedSelector';
 import reactLogo from './assets/react.svg';
-import viteLogo from '../../../../../../viteLogo.svg';
+import viteLogo from '../public/vite.svg';
 import './App.css';
 
 function App() {
+  const user = useTypedSelector(state => state.user);
+  console.log(user);
   const [count, setCount] = useState(0);
   return (
     <>
@@ -15,7 +18,7 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1 className="flex">Vite + React</h1>
       <div className="card">
         <button onClick={() => setCount(val => val + 1)} type="button">
           count is {count}
