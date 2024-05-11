@@ -17,8 +17,6 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@types/react-redux": "^7.1.33",
-    "axios": "^1.6.8",
     "classnames": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
