@@ -2,7 +2,7 @@ import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '../public/vite.svg';
 import './App.css';
-import UButton from './components/UI/UButton/UButton.component';
+import UButton from './components/IU/UButton/UButton.component';
 
 function App() {
   const [count, setCount] = useState(0);
