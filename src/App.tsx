@@ -1,12 +1,17 @@
 import { useState } from 'react';
-import useTypedSelector from './hooks/useTypedSelector';
+// import useTypedSelector from './hooks/useTypedSelector';
 import reactLogo from './assets/react.svg';
 import viteLogo from '../public/vite.svg';
 import './App.css';
+import apiRoot from './shared/API/apiRoot';
 
 function App() {
-  const user = useTypedSelector(state => state.user);
-  console.log(user);
+  const getProject = () => {
+    return apiRoot.get().execute();
+  };
+  getProject().then(console.log).catch(console.error);
+
+  // const user = useTypedSelector(state => state.user);
   const [count, setCount] = useState(0);
   return (
     <>
