@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ROUTES from '../../utils/routes';
 
-import UFormInput from '../IU/UFormInput/UFormInput';
-import UFormButton from '../IU/UFormButton/UFormButton';
-import UFormSelect from '../IU/UFormSelect/UFormSelect';
-import UFormLabel from '../IU/UFormLabel/UFormLabel';
+import UFormInput from '../UI/UFormInput/UFormInput';
+import UFormButton from '../UI/UFormButton/UFormButton';
+import UFormSelect from '../UI/UFormSelect/UFormSelect';
+import UFormLabel from '../UI/UFormLabel/UFormLabel';
 import { inputValidators, InputKey, getErrorMessage } from '../../utils/inputValidators';
 
 const SignUp = () => {
@@ -58,7 +58,7 @@ const SignUp = () => {
   };
 
   const handleSignUp = () => {
-    console.log(errors);
+    console.log('Submit');
   };
 
   return (
