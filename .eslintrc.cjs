@@ -30,6 +30,7 @@ module.exports = {
     'react/display-name': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'react/function-component-definition': 'off',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 0,
     'no-console': 'off',
