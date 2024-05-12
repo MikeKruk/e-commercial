@@ -93,7 +93,7 @@ const SignUp = () => {
               name="password"
               type="password"
               placeholder="Password"
-              value={values.email}
+              value={values.password}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('password', e.target.value)
               }
