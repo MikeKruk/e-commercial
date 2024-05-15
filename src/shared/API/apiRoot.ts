@@ -2,7 +2,14 @@
 import { ApiRoot, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import ctpClient from './BuildClient';
 
+const { PROJECT_KEY } = process.env;
+
+if (!PROJECT_KEY) {
+  throw new Error('projectKey is undifined');
+}
+
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
-  projectKey: 'e-commercial-team-key',
+  projectKey: PROJECT_KEY,
 });
+
 export default apiRoot;
