@@ -5,12 +5,11 @@ import { Link } from 'react-router-dom';
 import ROUTES from '../../utils/routes';
 
 import UFormInput from '../UI/UFormInput/UFormInput';
-import UFormButton from '../UI/UFormButton/UFormButton';
+import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import UFormSelect from '../UI/UFormSelect/UFormSelect';
-import UFormLabel from '../UI/UFormLabel/UFormLabel';
 import { inputValidators, InputKey, getErrorMessage } from '../../utils/inputValidators';
 
-const SignUp = () => {
+const SignUpForm = () => {
   const [showStreetErrors, setShowStreetErrors] = useState(false);
   const [isStreetEmpty, setIsStreetEmpty] = useState(true);
 
@@ -57,7 +56,8 @@ const SignUp = () => {
     }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp: React.FormEventHandler<HTMLFormElement> = (e: React.FormEvent) => {
+    e.preventDefault();
     console.log('Submit');
   };
 
@@ -70,26 +70,26 @@ const SignUp = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6">
-          <div>
-            <UFormLabel title="Email" htmlFor="email" />
+        <form className="space-y-6" onSubmit={handleSignUp}>
+          <div className="text-left">
             <UFormInput
-              id="email"
+              title="Email"
               name="email"
               type="email"
               placeholder="Email"
               value={values.email}
+              required
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('email', e.target.value)
               }
+              error={errors.email}
             />
-            {errors.email && <p className="text-red-400">{getErrorMessage('email')}</p>}
           </div>
 
-          <div>
-            <UFormLabel title="Password" htmlFor="password" />
+          <div className="text-left">
             <UFormInput
-              id="password"
+              title="Password"
+              required
               name="password"
               type="password"
               placeholder="Password"
@@ -97,71 +97,60 @@ const SignUp = () => {
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('password', e.target.value)
               }
+              error={errors.password}
             />
-            {errors.password && (
-              <p className="text-red-400">{getErrorMessage('password')}</p>
-            )}
           </div>
 
-          <div>
-            <UFormLabel title="First name" htmlFor="first_name" />
+          <div className="text-left">
             <UFormInput
-              id="first_name"
+              title="First name"
               name="first_name"
-              type="text"
+              required
               placeholder="First name"
               value={values.first_name}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('first_name', e.target.value)
               }
+              error={errors.first_name}
             />
-            {errors.first_name && (
-              <p className="text-red-400">{getErrorMessage('first_name')}</p>
-            )}
           </div>
 
-          <div>
-            <UFormLabel title="Last name" htmlFor="last_name" />
+          <div className="text-left">
             <UFormInput
-              id="last_name"
+              title="Last name"
               name="last_name"
-              type="text"
+              required
               placeholder="Last name"
               value={values.last_name}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('last_name', e.target.value)
               }
+              error={errors.last_name}
             />
-            {errors.last_name && (
-              <p className="text-red-400">{getErrorMessage('last_name')}</p>
-            )}
           </div>
 
-          <div>
-            <UFormLabel title="Date of Birth" htmlFor="birthdate" />
+          <div className="text-left">
             <UFormInput
-              id="birthdate"
+              title="Date of Birth"
               name="birthdate"
               type="date"
+              required
               placeholder="Date of Birth"
-              value=""
+              value={values.birthdate}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('birthdate', e.target.value)
               }
+              error={errors.birthdate}
             />
-            {errors.birthdate && (
-              <p className="text-red-400">{getErrorMessage('birthdate')}</p>
-            )}
           </div>
 
-          <div>
-            <UFormLabel title="Street" htmlFor="street" />
+          <div className="text-left">
             <UFormInput
-              id="street"
+              title="Street"
               name="street"
-              type="text"
+              required
               placeholder="Street"
-              value=""
+              value={values.street}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('street', e.target.value)
               }
@@ -171,45 +160,40 @@ const SignUp = () => {
             )}
           </div>
 
-          <div>
-            <UFormLabel title="City" htmlFor="city" />
+          <div className="text-left">
             <UFormInput
-              id="city"
+              title="City"
               name="city"
-              type="text"
+              value={values.city}
+              required
               placeholder="City"
-              value=""
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('city', e.target.value)
               }
+              error={errors.city}
             />
-            {errors.city && <p className="text-red-400">{getErrorMessage('city')}</p>}
           </div>
 
-          <div>
-            <UFormLabel title="Postal code" htmlFor="postal_code" />
+          <div className="text-left">
             <UFormInput
-              id="postal_code"
+              title="Postal"
               name="postal_code"
-              type="text"
+              required
               placeholder="Postal code"
-              value=""
+              value={values.postal_code}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('postal_code', e.target.value)
               }
+              error={errors.postal_code}
             />
-            {errors.postal_code && (
-              <p className="text-red-400">{getErrorMessage('postal_code')}</p>
-            )}
+          </div>
+
+          <div className="text-left">
+            <UFormSelect title="Country" />
           </div>
 
           <div>
-            <UFormLabel title="Country" htmlFor="countries" />
-            <UFormSelect id="countries" name="countries" />
-          </div>
-
-          <div>
-            <UFormButton text="Continue" onClick={handleSignUp} isDisabled={false} />
+            <UFormButton type={ButtonType.SUBMIT} text="Continue" isDisabled={false} />
           </div>
         </form>
 
@@ -226,4 +210,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpForm;
