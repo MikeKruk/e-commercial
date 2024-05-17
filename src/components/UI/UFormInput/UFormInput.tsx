@@ -5,7 +5,7 @@ interface IFormInput {
   type?: string;
   placeholder: string;
   value: string;
-  required: boolean;
+  required?: boolean;
   title: string;
   error?: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

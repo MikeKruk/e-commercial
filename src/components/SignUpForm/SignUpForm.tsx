@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import ROUTES from '../../utils/routes';
@@ -12,6 +12,7 @@ import { inputValidators, InputKey, getErrorMessage } from '../../utils/inputVal
 const SignUpForm = () => {
   const [showStreetErrors, setShowStreetErrors] = useState(false);
   const [isStreetEmpty, setIsStreetEmpty] = useState(true);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const [values, setValues] = useState({
     email: '',
@@ -58,8 +59,22 @@ const SignUpForm = () => {
 
   const handleSignUp: React.FormEventHandler<HTMLFormElement> = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submit');
+    console.log('Submit form');
   };
+
+  const handleCountryChange = (selectedCountry: string) => {
+    setValues(prev => ({
+      ...prev,
+      country: selectedCountry,
+    }));
+  };
+
+  useEffect(() => {
+    const isValid =
+      Object.values(values).every(val => val) &&
+      Object.values(errors).every(err => err.length === 0);
+    setIsFormValid(isValid);
+  }, [values, errors]);
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -78,7 +93,6 @@ const SignUpForm = () => {
               type="email"
               placeholder="Email"
               value={values.email}
-              required
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('email', e.target.value)
               }
@@ -89,7 +103,6 @@ const SignUpForm = () => {
           <div className="text-left">
             <UFormInput
               title="Password"
-              required
               name="password"
               type="password"
               placeholder="Password"
@@ -105,7 +118,6 @@ const SignUpForm = () => {
             <UFormInput
               title="First name"
               name="first_name"
-              required
               placeholder="First name"
               value={values.first_name}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -119,7 +131,6 @@ const SignUpForm = () => {
             <UFormInput
               title="Last name"
               name="last_name"
-              required
               placeholder="Last name"
               value={values.last_name}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -134,7 +145,6 @@ const SignUpForm = () => {
               title="Date of Birth"
               name="birthdate"
               type="date"
-              required
               placeholder="Date of Birth"
               value={values.birthdate}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -148,7 +158,6 @@ const SignUpForm = () => {
             <UFormInput
               title="Street"
               name="street"
-              required
               placeholder="Street"
               value={values.street}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -165,7 +174,6 @@ const SignUpForm = () => {
               title="City"
               name="city"
               value={values.city}
-              required
               placeholder="City"
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('city', e.target.value)
@@ -178,7 +186,6 @@ const SignUpForm = () => {
             <UFormInput
               title="Postal"
               name="postal_code"
-              required
               placeholder="Postal code"
               value={values.postal_code}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -189,11 +196,15 @@ const SignUpForm = () => {
           </div>
 
           <div className="text-left">
-            <UFormSelect title="Country" />
+            <UFormSelect title="Country" onChange={handleCountryChange} />
           </div>
 
           <div>
-            <UFormButton type={ButtonType.SUBMIT} text="Continue" isDisabled={false} />
+            <UFormButton
+              type={ButtonType.SUBMIT}
+              text="Continue"
+              isDisabled={!isFormValid}
+            />
           </div>
         </form>
 
