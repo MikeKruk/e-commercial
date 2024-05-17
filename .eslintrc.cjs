@@ -28,6 +28,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react'],
   rules: {
     'react/prop-types': 'off',
+    'react/require-default-props': 'off',
     'react/display-name': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',

@@ -8,6 +8,7 @@ import UFormInput from '../UI/UFormInput/UFormInput';
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import UFormSelect from '../UI/UFormSelect/UFormSelect';
 import { inputValidators, InputKey, getErrorMessage } from '../../utils/inputValidators';
+import user from '../../shared/API/requests/user';
 
 const SignUpForm = () => {
   const [showStreetErrors, setShowStreetErrors] = useState(false);
@@ -57,9 +58,26 @@ const SignUpForm = () => {
     }
   };
 
-  const handleSignUp: React.FormEventHandler<HTMLFormElement> = (e: React.FormEvent) => {
+  const handleSignUp: React.FormEventHandler<HTMLFormElement> = async (
+    e: React.FormEvent,
+  ) => {
     e.preventDefault();
-    console.log('Submit form');
+    try {
+      await user.createUser({
+        email: values.email,
+        password: values.password,
+        first_name: values.first_name,
+        last_name: values.last_name,
+        birthdate: values.birthdate,
+        street: values.street,
+        city: values.city,
+        postal_code: values.postal_code,
+        country: values.country,
+      });
+      console.log('Submit form');
+    } catch (error) {
+      console.log('Error in registration');
+    }
   };
 
   const handleCountryChange = (selectedCountry: string) => {

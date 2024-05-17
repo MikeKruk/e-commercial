@@ -33,9 +33,9 @@ function UFormSelect({ title, name = '', required = true, onChange }: IFormSelec
   );
 }
 
-UFormSelect.defaultProps = {
-  name: '',
-  required: true,
-};
+// UFormSelect.defaultProps = {
+//   name: '',
+//   required: true,
+// };
 
 export default UFormSelect;
