@@ -5,6 +5,8 @@ interface IFormSelect {
   onChange: (option: string) => void;
 }
 
+export type SelectCountryKey = 'country' | 'billing_country';
+
 const items = ['Canada', 'Poland'];
 
 function UFormSelect({ title, name = '', required = true, onChange }: IFormSelect) {
@@ -32,10 +34,5 @@ function UFormSelect({ title, name = '', required = true, onChange }: IFormSelec
     </label>
   );
 }
-
-// UFormSelect.defaultProps = {
-//   name: '',
-//   required: true,
-// };
 
 export default UFormSelect;
