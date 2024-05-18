@@ -6,14 +6,17 @@ import ROUTES from '../../utils/routes';
 
 import UFormInput from '../UI/UFormInput/UFormInput';
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
-import UFormSelect from '../UI/UFormSelect/UFormSelect';
-import { inputValidators, InputKey, getErrorMessage } from '../../utils/inputValidators';
+import UFormSelect, { SelectCountryKey } from '../UI/UFormSelect/UFormSelect';
+import UFormCheckbox from '../UI/UFormCheckbox/UFormCheckbox';
+import { inputValidators, InputKey } from '../../utils/inputValidators';
+
 import user from '../../shared/API/requests/user';
 
 const SignUpForm = () => {
-  const [showStreetErrors, setShowStreetErrors] = useState(false);
-  const [isStreetEmpty, setIsStreetEmpty] = useState(true);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [useAsBillingAddress, setUseAsBillingAddress] = useState(false);
+  const [useDefaultAddress, setUseDefaultAddress] = useState(false);
+  const [useDefaultBillingAddress, setUseDefaultBillingAddress] = useState(false);
 
   const [values, setValues] = useState({
     email: '',
@@ -25,6 +28,10 @@ const SignUpForm = () => {
     city: '',
     postal_code: '',
     country: '',
+    billing_street: '',
+    billing_city: '',
+    billing_postal_code: '',
+    billing_country: '',
   });
 
   const [errors, setErrors] = useState({
@@ -37,19 +44,27 @@ const SignUpForm = () => {
     city: '',
     postal_code: '',
     country: '',
+    billing_street: '',
+    billing_city: '',
+    billing_postal_code: '',
+    billing_country: '',
   });
 
   const handleChange = (key: InputKey, value: string) => {
-    setValues(prev => ({
-      ...prev,
-      [key]: value,
-    }));
+    setValues(prev => {
+      const newValues = {
+        ...prev,
+        [key]: value,
+      };
+      if (useAsBillingAddress) {
+        if (key === 'street') newValues.billing_street = value;
+        if (key === 'city') newValues.billing_city = value;
+        if (key === 'postal_code') newValues.billing_postal_code = value;
+      }
+      return newValues;
+    });
 
     if (inputValidators[key]) {
-      if (key === 'street') {
-        setShowStreetErrors(value === '');
-        setIsStreetEmpty(value === '');
-      }
       const isValid = inputValidators[key](value);
       setErrors(prev => ({
         ...prev,
@@ -57,6 +72,20 @@ const SignUpForm = () => {
       }));
     }
   };
+
+  const handleSelectChange = (key: SelectCountryKey, value: string) => {
+    setValues(prev => {
+      const newValues = {
+        ...prev,
+        [key]: value,
+      };
+      if (useAsBillingAddress) {
+        newValues.billing_country = value;
+      }
+      return newValues;
+    });
+  };
+
 
   const handleSignUp: React.FormEventHandler<HTMLFormElement> = async (
     e: React.FormEvent,
@@ -73,6 +102,11 @@ const SignUpForm = () => {
         city: values.city,
         postal_code: values.postal_code,
         country: values.country,
+        billing_street: values.billing_street,
+        billing_city: values.billing_city,
+        billing_postal_code: values.billing_postal_code,
+        billing_country: values.billing_country,
+
       });
       console.log('Submit form');
     } catch (error) {
@@ -80,11 +114,14 @@ const SignUpForm = () => {
     }
   };
 
-  const handleCountryChange = (selectedCountry: string) => {
-    setValues(prev => ({
-      ...prev,
-      country: selectedCountry,
-    }));
+  const handleSelectBillingAddres = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUseAsBillingAddress(e.target.checked);
+  };
+  const handleUseDefaultAddres = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUseDefaultAddress(e.target.checked);
+  };
+  const handleUseDefaultBillingAddres = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUseDefaultBillingAddress(e.target.checked);
   };
 
   useEffect(() => {
@@ -94,42 +131,67 @@ const SignUpForm = () => {
     setIsFormValid(isValid);
   }, [values, errors]);
 
+  useEffect(() => {
+    if (useAsBillingAddress) {
+      setValues(prev => ({
+        ...prev,
+        billing_street: prev.street,
+        billing_city: prev.city,
+        billing_postal_code: prev.postal_code,
+        billing_country: prev.country,
+      }));
+    }
+  }, [
+    useAsBillingAddress,
+    values.street,
+    values.city,
+    values.postal_code,
+    values.country,
+  ]);
+
+  if (isFormValid) {
+    const dataToSignUp = values;
+    console.log(dataToSignUp);
+  }
+
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#fff] w-[700px] rounded-[20px]">
+      <div className="sm:mx-auto sm:w-full">
+        <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 m-0">
           Create account
         </h2>
       </div>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="mt-10 sm:mx-auto sm:w-full">
         <form className="space-y-6" onSubmit={handleSignUp}>
-          <div className="text-left">
-            <UFormInput
-              title="Email"
-              name="email"
-              type="email"
-              placeholder="Email"
-              value={values.email}
-              handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleChange('email', e.target.value)
-              }
-              error={errors.email}
-            />
-          </div>
+          <div className="text-left flex gap-[35px] justify-between">
+            <div className="w-1/2">
+              <UFormInput
+                title="Email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={values.email}
+                handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleChange('email', e.target.value)
+                }
+                error={errors.email}
+              />
+            </div>
 
-          <div className="text-left">
-            <UFormInput
-              title="Password"
-              name="password"
-              type="password"
-              placeholder="Password"
-              value={values.password}
-              handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleChange('password', e.target.value)
-              }
-              error={errors.password}
-            />
+            <div className="w-1/2">
+              <UFormInput
+                title="Password"
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={values.password}
+                handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleChange('password', e.target.value)
+                }
+                error={errors.password}
+              />
+            </div>
           </div>
 
           <div className="text-left">
@@ -172,6 +234,10 @@ const SignUpForm = () => {
             />
           </div>
 
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            Shipping Address
+          </h2>
+
           <div className="text-left">
             <UFormInput
               title="Street"
@@ -181,10 +247,8 @@ const SignUpForm = () => {
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange('street', e.target.value)
               }
+              error={errors.street}
             />
-            {showStreetErrors && isStreetEmpty && (
-              <p className="text-red-400">{getErrorMessage('street')}</p>
-            )}
           </div>
 
           <div className="text-left">
@@ -214,8 +278,99 @@ const SignUpForm = () => {
           </div>
 
           <div className="text-left">
-            <UFormSelect title="Country" onChange={handleCountryChange} />
+            <UFormSelect
+              title="Country"
+              onChange={(selectedCountry: string) =>
+                handleSelectChange('country', selectedCountry)
+              }
+            />
           </div>
+
+          <div className="flex justify-between">
+            <div>
+              <UFormCheckbox
+                text="Set as default address"
+                checked={useDefaultAddress}
+                onChange={e => {
+                  handleUseDefaultAddres(e);
+                }}
+              />
+            </div>
+            <div>
+              <UFormCheckbox
+                text="Also use as a billing address"
+                checked={useAsBillingAddress}
+                onChange={e => handleSelectBillingAddres(e)}
+              />
+            </div>
+          </div>
+          {!useAsBillingAddress && (
+            <div className="space-y-6">
+              <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                Billing Address
+              </h2>
+
+              <div className="text-left">
+                <UFormInput
+                  title="Street"
+                  name="billing_street"
+                  placeholder="Street"
+                  value={values.billing_street}
+                  handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChange('billing_street', e.target.value)
+                  }
+                  error={errors.billing_street}
+                />
+              </div>
+
+              <div className="text-left">
+                <UFormInput
+                  title="City"
+                  name="billing_city"
+                  value={values.billing_city}
+                  placeholder="City"
+                  handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChange('billing_city', e.target.value)
+                  }
+                  error={errors.billing_city}
+                />
+              </div>
+
+              <div className="text-left">
+                <UFormInput
+                  title="Postal"
+                  name="billing_postal_code"
+                  placeholder="Postal code"
+                  value={values.billing_postal_code}
+                  handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChange('billing_postal_code', e.target.value)
+                  }
+                  error={errors.billing_postal_code}
+                />
+              </div>
+
+              <div className="text-left">
+                <UFormSelect
+                  title="Country"
+                  onChange={(selectedCountry: string) =>
+                    handleSelectChange('billing_country', selectedCountry)
+                  }
+                />
+              </div>
+
+              <div className="flex justify-between">
+                <div>
+                  <UFormCheckbox
+                    text="Set as default address"
+                    checked={useDefaultBillingAddress}
+                    onChange={e => {
+                      handleUseDefaultBillingAddres(e);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           <div>
             <UFormButton
