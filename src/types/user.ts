@@ -25,4 +25,5 @@ export interface ISignUpData {
   billing_city: string;
   billing_postal_code: string;
   billing_country: string;
+
 }

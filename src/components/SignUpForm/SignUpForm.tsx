@@ -9,6 +9,7 @@ import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import UFormSelect, { SelectCountryKey } from '../UI/UFormSelect/UFormSelect';
 import UFormCheckbox from '../UI/UFormCheckbox/UFormCheckbox';
 import { inputValidators, InputKey } from '../../utils/inputValidators';
+
 import user from '../../shared/API/requests/user';
 
 const SignUpForm = () => {
@@ -85,6 +86,7 @@ const SignUpForm = () => {
     });
   };
 
+
   const handleSignUp: React.FormEventHandler<HTMLFormElement> = async (
     e: React.FormEvent,
   ) => {
@@ -104,6 +106,7 @@ const SignUpForm = () => {
         billing_city: values.billing_city,
         billing_postal_code: values.billing_postal_code,
         billing_country: values.billing_country,
+
       });
       console.log('Submit form');
     } catch (error) {
