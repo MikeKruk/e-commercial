@@ -125,10 +125,12 @@ const SignUpForm = () => {
 
   useEffect(() => {
     const isValid =
-      Object.values(values).every(val => val) &&
-      Object.values(errors).every(err => err.length === 0);
+      Object.values(values).every((val, index) => {
+        if (useAsBillingAddress && index >= 7 && index <= 10) return true;
+        return val;
+      }) && Object.values(errors).every(err => err.length === 0);
     setIsFormValid(isValid);
-  }, [values, errors]);
+  }, [values, errors, useAsBillingAddress]);
 
   useEffect(() => {
     if (useAsBillingAddress) {
