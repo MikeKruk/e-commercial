@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ROUTES from '../../utils/routes';
 
-import UFormInput from '../UI/UFormInput/UFormInput';
-import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
+import Input from '../UI/Input/Input';
 import UFormSelect from '../UI/UFormSelect/UFormSelect';
 import { inputValidators, InputKey, getErrorMessage } from '../../utils/inputValidators';
 import user from '../../shared/API/requests/user';
+import FormButton, { ButtonType } from '../UI/FormButton/FormButton';
 
 const SignUpForm = () => {
   const [showStreetErrors, setShowStreetErrors] = useState(false);
@@ -105,7 +105,7 @@ const SignUpForm = () => {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleSignUp}>
           <div className="text-left">
-            <UFormInput
+            <Input
               title="Email"
               name="email"
               type="email"
@@ -119,7 +119,7 @@ const SignUpForm = () => {
           </div>
 
           <div className="text-left">
-            <UFormInput
+            <Input
               title="Password"
               name="password"
               type="password"
@@ -133,7 +133,7 @@ const SignUpForm = () => {
           </div>
 
           <div className="text-left">
-            <UFormInput
+            <Input
               title="First name"
               name="first_name"
               placeholder="First name"
@@ -146,7 +146,7 @@ const SignUpForm = () => {
           </div>
 
           <div className="text-left">
-            <UFormInput
+            <Input
               title="Last name"
               name="last_name"
               placeholder="Last name"
@@ -159,7 +159,7 @@ const SignUpForm = () => {
           </div>
 
           <div className="text-left">
-            <UFormInput
+            <Input
               title="Date of Birth"
               name="birthdate"
               type="date"
@@ -173,7 +173,7 @@ const SignUpForm = () => {
           </div>
 
           <div className="text-left">
-            <UFormInput
+            <Input
               title="Street"
               name="street"
               placeholder="Street"
@@ -188,7 +188,7 @@ const SignUpForm = () => {
           </div>
 
           <div className="text-left">
-            <UFormInput
+            <Input
               title="City"
               name="city"
               value={values.city}
@@ -201,7 +201,7 @@ const SignUpForm = () => {
           </div>
 
           <div className="text-left">
-            <UFormInput
+            <Input
               title="Postal"
               name="postal_code"
               placeholder="Postal code"
@@ -218,7 +218,7 @@ const SignUpForm = () => {
           </div>
 
           <div>
-            <UFormButton
+            <FormButton
               type={ButtonType.SUBMIT}
               text="Continue"
               isDisabled={!isFormValid}
