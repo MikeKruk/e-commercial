@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { ApiRoot, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import ctpClient from './BuildClient';
 
 const { PROJECT_KEY } = process.env;

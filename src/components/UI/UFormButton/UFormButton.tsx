@@ -1,24 +1,29 @@
+import { ButtonHTMLAttributes } from 'react';
+
 export enum ButtonType {
   SUBMIT = 'submit',
   BUTTON = 'button',
 }
 
-interface IFormButton {
-  text: string;
+interface IFormButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   isDisabled: boolean;
   type: ButtonType;
   className?: string;
   onClick?: () => void;
   icon?: React.ReactNode;
+  text?: string;
+  customClassName?: string;
 }
 
 const UFormButton: React.FC<IFormButton> = ({
-  text,
   type,
   isDisabled = true,
+  text,
   onClick,
   className,
   icon,
+  customClassName,
+  ...rest
 }) => {
   return (
     <button
@@ -26,6 +31,7 @@ const UFormButton: React.FC<IFormButton> = ({
       disabled={isDisabled}
       type={type === ButtonType.SUBMIT ? 'submit' : 'button'}
       onClick={() => onClick && onClick()}
+      {...rest}
     >
       {icon && <span className="mr-2">{icon}</span>}
 

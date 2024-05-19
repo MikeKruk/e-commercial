@@ -25,8 +25,9 @@ const inputValidators = {
     /^\d{2}-\d{3}$/.test(billing_postal_code),
 };
 
-const getErrorMessage = (key: string): string => {
-  switch (key) {
+const getErrorMessage = (key: string | undefined): string => {
+  const name = key || '';
+  switch (name) {
     case 'email':
       return 'Wrong or Invalid email address. Please correct and try again.';
     case 'password':

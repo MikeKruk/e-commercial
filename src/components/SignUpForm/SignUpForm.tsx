@@ -91,21 +91,22 @@ const SignUpForm = () => {
   ) => {
     e.preventDefault();
     try {
-      await user.createUser({
-        email: values.email,
-        password: values.password,
-        first_name: values.first_name,
-        last_name: values.last_name,
-        birthdate: values.birthdate,
-        street: values.street,
-        city: values.city,
-        postal_code: values.postal_code,
-        country: values.country,
-        billing_street: values.billing_street,
-        billing_city: values.billing_city,
-        billing_postal_code: values.billing_postal_code,
-        billing_country: values.billing_country,
-      });
+      await user
+        .createUser
+        // email: values.email,
+        // password: values.password,
+        // first_name: values.first_name,
+        // last_name: values.last_name,
+        // birthdate: values.birthdate,
+        // street: values.street,
+        // city: values.city,
+        // postal_code: values.postal_code,
+        // country: values.country,
+        // billing_street: values.billing_street,
+        // billing_city: values.billing_city,
+        // billing_postal_code: values.billing_postal_code,
+        // billing_country: values.billing_country,
+        ();
       console.log('Submit form');
     } catch (error) {
       console.log('Error in registration');
