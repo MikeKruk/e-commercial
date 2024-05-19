@@ -1,4 +1,3 @@
-import { Ref, forwardRef } from 'react';
 import { getErrorMessage } from '../../../utils/inputValidators';
 
 interface IInput {
@@ -12,24 +11,20 @@ interface IInput {
   handleChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input: React.ForwardRefRenderFunction<HTMLInputElement, IInput> = (
-  {
-    name,
-    type = 'text',
-    placeholder,
-    value,
-    required = true,
-    handleChange,
-    title,
-    error,
-  },
-  forwardedRef: Ref<HTMLInputElement>,
-) => {
+const Input: React.FC<IInput> = ({
+  name,
+  type = 'text',
+  placeholder,
+  value,
+  required = true,
+  handleChange,
+  title,
+  error,
+}) => {
   return (
     <label>
       {title}
       <input
-        ref={forwardedRef}
         name={name}
         type={type}
         required={required}
@@ -43,4 +38,4 @@ const Input: React.ForwardRefRenderFunction<HTMLInputElement, IInput> = (
   );
 };
 
-export default forwardRef(Input);
+export default Input;
