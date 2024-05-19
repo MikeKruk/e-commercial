@@ -91,21 +91,22 @@ const SignUpForm = () => {
   ) => {
     e.preventDefault();
     try {
-      await user.createUser({
-        email: values.email,
-        password: values.password,
-        first_name: values.first_name,
-        last_name: values.last_name,
-        birthdate: values.birthdate,
-        street: values.street,
-        city: values.city,
-        postal_code: values.postal_code,
-        country: values.country,
-        billing_street: values.billing_street,
-        billing_city: values.billing_city,
-        billing_postal_code: values.billing_postal_code,
-        billing_country: values.billing_country,
-      });
+      await user
+        .createUser
+        // email: values.email,
+        // password: values.password,
+        // first_name: values.first_name,
+        // last_name: values.last_name,
+        // birthdate: values.birthdate,
+        // street: values.street,
+        // city: values.city,
+        // postal_code: values.postal_code,
+        // country: values.country,
+        // billing_street: values.billing_street,
+        // billing_city: values.billing_city,
+        // billing_postal_code: values.billing_postal_code,
+        // billing_country: values.billing_country,
+        ();
       console.log('Submit form');
     } catch (error) {
       console.log('Error in registration');
@@ -124,10 +125,12 @@ const SignUpForm = () => {
 
   useEffect(() => {
     const isValid =
-      Object.values(values).every(val => val) &&
-      Object.values(errors).every(err => err.length === 0);
+      Object.values(values).every((val, index) => {
+        if (useAsBillingAddress && index >= 7 && index <= 10) return true;
+        return val;
+      }) && Object.values(errors).every(err => err.length === 0);
     setIsFormValid(isValid);
-  }, [values, errors]);
+  }, [values, errors, useAsBillingAddress]);
 
   useEffect(() => {
     if (useAsBillingAddress) {
