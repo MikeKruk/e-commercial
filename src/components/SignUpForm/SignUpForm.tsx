@@ -86,7 +86,6 @@ const SignUpForm = () => {
     });
   };
 
-
   const handleSignUp: React.FormEventHandler<HTMLFormElement> = async (
     e: React.FormEvent,
   ) => {
@@ -106,7 +105,6 @@ const SignUpForm = () => {
         billing_city: values.billing_city,
         billing_postal_code: values.billing_postal_code,
         billing_country: values.billing_country,
-
       });
       console.log('Submit form');
     } catch (error) {
@@ -155,7 +153,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#fff] w-[700px] rounded-[20px]">
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#fff] w-[700px] rounded-[20px] mx-auto my-6">
       <div className="sm:mx-auto sm:w-full">
         <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 m-0">
           Create account
@@ -286,7 +284,7 @@ const SignUpForm = () => {
             />
           </div>
 
-          <div className="flex justify-between">
+          <div className="flex justify-between text-black">
             <div>
               <UFormCheckbox
                 text="Set as default address"
@@ -358,7 +356,7 @@ const SignUpForm = () => {
                 />
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between text-black">
                 <div>
                   <UFormCheckbox
                     text="Set as default address"
