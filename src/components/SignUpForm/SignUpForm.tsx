@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useEffect, useState } from 'react';
-
 import { Link } from 'react-router-dom';
-import ROUTES from '../../utils/routes';
 
+import ROUTES from '../../utils/routes';
 import UFormInput from '../UI/UFormInput/UFormInput';
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import UFormSelect, { SelectCountryKey } from '../UI/UFormSelect/UFormSelect';
 import UFormCheckbox from '../UI/UFormCheckbox/UFormCheckbox';
 import { inputValidators, InputKey } from '../../utils/inputValidators';
+import logo from '../../assets/logo.png';
 
 import user from '../../shared/API/requests/user';
 
@@ -153,7 +153,10 @@ const SignUpForm = () => {
   }
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#fff] w-[700px] rounded-[20px] mx-auto my-6">
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-3 lg:px-8 bg-[#fff] w-[700px] rounded-[20px] mx-auto my-6">
+      <div className="flex items-center justify-center">
+        <img src={logo} alt="logo" className="h-auto w-[150px]" />
+      </div>
       <div className="sm:mx-auto sm:w-full">
         <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 m-0">
           Create account
