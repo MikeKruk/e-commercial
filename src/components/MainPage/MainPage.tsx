@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import ROUTES from '../../utils/routes';
+// import { useCurrentUser } from '../../store/user/hooks';
 
 const MainPage = () => {
   const navigate = useNavigate();
+  // const [user, setCurrentUser] = useCurrentUser();
   return (
     <div className="mx-auto my-6 flex justify-center items-center flex-col gap-6">
+      {/* {user} */}
       <div className="w-4/12">
         <UFormButton
           type={ButtonType.SUBMIT}

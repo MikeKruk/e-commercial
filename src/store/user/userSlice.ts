@@ -28,3 +28,41 @@
 // export const {addItemToCart} = userSlice.actions
 
 // export default userSlice.reducer
+
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+
+import type { AppState } from '..';
+
+export interface UserState {
+  currentUser: string | null;
+  cart: string[];
+}
+
+const initialState: UserState = {
+  currentUser: null,
+  cart: [],
+};
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    addUser: (state, action: PayloadAction<string>) => {
+      // eslint-disable-next-line no-param-reassign
+      state.currentUser = action.payload;
+    },
+    resetUser: state => {
+      // eslint-disable-next-line no-param-reassign
+      state.currentUser = null;
+    },
+  },
+});
+
+export const { addUser, resetUser } = userSlice.actions;
+
+export default userSlice.reducer;
+
+/* Selectors */
+
+export const selectCurrentUser = (state: AppState) => state.user.currentUser;
