@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaHome } from 'react-icons/fa';
 import image from '../../assets/not-found.jpg';
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
+import ROUTES from '../../utils/routes';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const NotFoundPage = () => {
           text="Back Home"
           icon={<FaHome />}
           className="flex items-center mt-10"
-          onClick={() => navigate('/')}
+          onClick={() => navigate(ROUTES.MAIN_PAGE)}
         />
       </div>
     </div>

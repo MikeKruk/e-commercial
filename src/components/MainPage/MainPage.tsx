@@ -2,6 +2,7 @@ import { FaUser, FaList, FaShoppingCart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
+import ROUTES from '../../utils/routes';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const MainPage = () => {
           text="Profile"
           icon={<FaUser />}
           className="flex items-center"
-          onClick={() => navigate('/not-found-404')}
+          onClick={() => navigate(ROUTES.NOT_FOUND)}
         />
       </div>
       <div className="w-4/12">
@@ -24,7 +25,7 @@ const MainPage = () => {
           text="Catalog"
           icon={<FaList />}
           className="flex items-center"
-          onClick={() => navigate('/not-found-404')}
+          onClick={() => navigate(ROUTES.NOT_FOUND)}
         />
       </div>
       <div className="w-4/12">
@@ -34,7 +35,7 @@ const MainPage = () => {
           text="Cart"
           icon={<FaShoppingCart />}
           className="flex items-center"
-          onClick={() => navigate('/not-found-404')}
+          onClick={() => navigate(ROUTES.NOT_FOUND)}
         />
       </div>
     </div>
