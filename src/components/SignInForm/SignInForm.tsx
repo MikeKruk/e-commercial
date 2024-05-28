@@ -26,7 +26,7 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center items-center px-6 py-3 lg:px-8 bg-[#fff] w-[700px] rounded-[20px] mx-auto my-6">
+    <div className="flex min-h-full flex-1 flex-col justify-center items-center px-6 py-3 lg:px-8 bg-[#fff] max-w-[700px] rounded-[20px] mx-auto my-6">
       <div className="mt-10 sm:mx-auto sm:w-full">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="text-left flex flex-col gap-[24px] justify-between items-center">

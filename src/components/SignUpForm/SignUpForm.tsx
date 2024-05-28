@@ -156,7 +156,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-3 lg:px-8 bg-[#fff] w-[700px] rounded-[20px] mx-auto my-6">
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-3 lg:px-8 bg-[#fff] max-w-[700px] rounded-[20px] mx-auto my-6">
       <div className="flex items-center justify-center">
         <img src={logo} alt="logo" className="h-auto w-[150px]" />
       </div>
@@ -168,8 +168,8 @@ const SignUpForm = () => {
 
       <div className="mt-10 sm:mx-auto sm:w-full">
         <form className="space-y-6" onSubmit={handleSignUp}>
-          <div className="text-left flex gap-[35px] justify-between">
-            <div className="w-1/2">
+          <div className="text-left flex gap-[35px] justify-between flex-col md:flex-row">
+            <div className="w-full md:w-1/2">
               <UFormInput
                 title="Email"
                 name="email"
@@ -183,7 +183,7 @@ const SignUpForm = () => {
               />
             </div>
 
-            <div className="w-1/2">
+            <div className="w-full md:w-1/2">
               <UFormInput
                 title="Password"
                 name="password"
@@ -281,7 +281,7 @@ const SignUpForm = () => {
             />
           </div>
 
-          <div className="text-left">
+          <div className="text-left w-full">
             <UFormSelect
               title="Country"
               onChange={(selectedCountry: string) =>
@@ -290,7 +290,7 @@ const SignUpForm = () => {
             />
           </div>
 
-          <div className="flex justify-between text-black">
+          <div className="flex  flex-col sm:flex-row justify-between text-black">
             <div>
               <UFormCheckbox
                 text="Set as default address"

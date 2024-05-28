@@ -22,7 +22,7 @@ const UFormInput: React.FC<IInput> = ({
   error,
 }) => {
   return (
-    <label>
+    <label className="text-gray-900">
       {title}
       <input
         name={name}
