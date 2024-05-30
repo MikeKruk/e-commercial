@@ -1,3 +1,4 @@
+import SdkAuth from '@commercetools/sdk-auth';
 import fetch from 'node-fetch';
 
 import {
@@ -29,12 +30,23 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 };
 
+const authClient = new SdkAuth({
+  host: AUTH_URL,
+  projectKey: PROJECT_KEY,
+  credentials: {
+    clientId: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
+  },
+  scopes: [SCOPE],
+  fetch,
+});
+
 // Export the ClientBuilder
 const ctpClient = new ClientBuilder()
   .withProjectKey(PROJECT_KEY)
-  .withAnonymousSessionFlow(authMiddlewareOptions)
+  .withClientCredentialsFlow(authMiddlewareOptions)
   .withHttpMiddleware(httpMiddlewareOptions)
   .withLoggerMiddleware() // Include middleware for logging
   .build();
 
-export default ctpClient;
+export { ctpClient, authClient };
