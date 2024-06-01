@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@commercetools/platform-sdk": "^7.8.0",
+    "@commercetools/sdk-auth": "^4.0.1",
     "@commercetools/sdk-client-v2": "^2.5.0",
     "@reduxjs/toolkit": "^2.2.5",
     "@tailwindcss/forms": "^0.5.7",
