@@ -17,11 +17,13 @@ const NotFoundPage = () => {
         backgroundPosition: 'center',
       }}
     >
-      <h1 className="text-6xl font-bold text-gray-800 mb-4 mt-24">Page not found</h1>
-      <p className="text-2xl font-bold text-gray-800 mb-4">
+      <h1 className="text-2xl sm:text-6xl font-bold text-gray-800 mb-4 mt-24 text-center">
+        Page not found
+      </h1>
+      <p className="text-xl sm:text-2xl  font-bold text-gray-800 mb-4  text-center">
         Sorry, the requested page was not found.
       </p>
-      <div className="w-4/12">
+      <div className="w-1/2  sm:w-4/12">
         <UFormButton
           type={ButtonType.SUBMIT}
           isDisabled={false}

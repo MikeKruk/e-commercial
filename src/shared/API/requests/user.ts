@@ -3,6 +3,7 @@ import { ctpClient, authClient } from '../BuildClient';
 
 // import apiRoot from '../apiRoot';
 
+
 const { PROJECT_KEY } = process.env;
 
 async function getAccessToken() {
@@ -52,6 +53,7 @@ async function loginUser(email: string, password: string) {
     throw new Error(e instanceof Error ? e.message : 'error');
   }
 }
+
 
 async function getCustomerToken(username: string, password: string) {
   try {
