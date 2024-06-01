@@ -7,15 +7,19 @@ import ROUTES from '../../utils/routes';
 import ISignInFields from '../../types/sign.in.fields';
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import ReactFormInput from '../UI/UFormInput/ReactFormInput';
+import user from '../../shared/API/requests/user';
 
 const SignInForm = () => {
   const {
     register,
+    getValues,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<ISignInFields>({ mode: 'onChange' });
 
   const onSubmit: SubmitHandler<ISignInFields> = data => {
+    const { email, password } = getValues();
+    user.loginUser(email, password);
     console.log(data);
   };
 

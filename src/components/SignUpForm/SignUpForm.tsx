@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { CustomerDraft } from '@commercetools/platform-sdk';
 
 import ROUTES from '../../utils/routes';
 import UFormInput from '../UI/UFormInput/UFormInput';
@@ -91,23 +92,47 @@ const SignUpForm = () => {
   ) => {
     e.preventDefault();
     try {
-      await user
-        .createUser
-        // email: values.email,
-        // password: values.password,
-        // first_name: values.first_name,
-        // last_name: values.last_name,
-        // birthdate: values.birthdate,
-        // street: values.street,
-        // city: values.city,
-        // postal_code: values.postal_code,
-        // country: values.country,
-        // billing_street: values.billing_street,
-        // billing_city: values.billing_city,
-        // billing_postal_code: values.billing_postal_code,
-        // billing_country: values.billing_country,
-        ();
-      console.log('Submit form');
+      const userData: CustomerDraft = {
+        email: values.email,
+        password: values.password,
+        firstName: values.first_name,
+        lastName: values.last_name,
+        dateOfBirth: values.birthdate,
+        addresses: [
+          {
+            streetName: values.street,
+            city: values.city,
+            postalCode: values.postal_code,
+            country: values.country === 'Poland' ? 'PL' : 'CA',
+            key: 'shipping',
+          },
+        ],
+        shippingAddresses: [0],
+        billingAddresses: !useAsBillingAddress ? [1] : [0],
+        ...(useDefaultAddress && { defaultShippingAddress: 0 }),
+        ...((useDefaultBillingAddress || useAsBillingAddress) && {
+          defaultBillingAddress: useAsBillingAddress ? 0 : 1,
+        }),
+      };
+      if (
+        !useAsBillingAddress &&
+        values.billing_street &&
+        values.billing_city &&
+        values.billing_postal_code &&
+        values.billing_country
+      ) {
+        userData.addresses?.push({
+          streetName: values.billing_street,
+          city: values.billing_city,
+          postalCode: values.billing_postal_code,
+          country: values.billing_country === 'Poland' ? 'PL' : 'CA',
+          key: 'billing',
+        });
+      }
+      const response = await user.createUser(userData);
+      await user.getCustomerToken(values.email, values.password);
+
+      console.log('Submit form', response);
     } catch (error) {
       console.log('Error in registration');
     }

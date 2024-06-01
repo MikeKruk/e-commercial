@@ -11,18 +11,26 @@ export interface IUserAction {
   payload: string;
 }
 
-export interface ISignUpData {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-  birthdate: string;
-  street: string;
-  city: string;
-  postal_code: string;
-  country: string;
-  billing_street: string;
-  billing_city: string;
-  billing_postal_code: string;
-  billing_country: string;
-}
+// export interface ISignUpData {
+//   email: string;
+//   password: string;
+//   first_name: string;
+//   last_name: string;
+//   birthdate: string;
+//   addresses: [
+//     {
+//       streetName: string;
+//       city: string;
+//       postalCode: string;
+//       country: 'PL' | 'CA';
+//       key: 'shipping';
+//     },
+//     {
+//       billing_street: string;
+//       billing_city: string;
+//       billing_postal_code: string;
+//       billing_country: 'PL' | 'CA';
+//       key: 'billing';
+//     },
+//   ];
+// }
