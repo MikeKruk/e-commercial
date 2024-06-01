@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import { useState } from 'react';
 import ROUTES from '../../utils/routes';
@@ -17,9 +17,12 @@ const SignInForm = () => {
     formState: { errors, isValid },
   } = useForm<ISignInFields>({ mode: 'onChange' });
 
-  const onSubmit: SubmitHandler<ISignInFields> = data => {
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<ISignInFields> = async data => {
     const { email, password } = getValues();
-    user.loginUser(email, password);
+    user.loginUser(email, password, navigate);
+    await user.getCustomerToken(email, password, navigate);
     console.log(data);
   };
 
