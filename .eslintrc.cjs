@@ -27,6 +27,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'react'],
   rules: {
+    '@typescript-eslint/no-unused-expressions': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
