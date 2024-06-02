@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-unescaped-entities */
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -10,6 +11,7 @@ import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import ReactFormInput from '../UI/UFormInput/ReactFormInput';
 import user from '../../shared/API/requests/user';
 import { UToaster, notify } from '../UI/Toaster/UToaster';
+import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/constants';
 
 const SignInForm = () => {
   const {
@@ -21,18 +23,18 @@ const SignInForm = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<ISignInFields> = async data => {
+  const onSubmit: SubmitHandler<ISignInFields> = async _data => {
     const { email, password } = getValues();
-    
+
     try {
       await user.loginUser(email, password, navigate);
-      notify('Successful sign in!', true)
-      
+      notify('Successful sign in!', true);
+
       await user.getCustomerToken(email, password, navigate);
     } catch (error) {
       error instanceof Error ? notify(error.message, false) : console.log('error');
     }
-       };
+  };
 
   const [showPassword, setShowPassword] = useState<boolean>();
 
@@ -55,7 +57,7 @@ const SignInForm = () => {
                 registerOptions={{
                   required: 'This field is required',
                   pattern: {
-                    value: /^s*[a-zA-Z0-9._%+-/]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}s*$/,
+                    value: EMAIL_REGEX,
                     message:
                       'Email address must be properly formatted (e.g., user@example.com)',
                   },
@@ -72,8 +74,7 @@ const SignInForm = () => {
                 registerOptions={{
                   required: 'This field is required',
                   pattern: {
-                    value:
-                      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/,
+                    value: PASSWORD_REGEX,
                     message:
                       'Your password must contain at least 8 characters, at least one uppercase and lowercase letter, one digit, and one special character (e.g., !@#$%^&*), and must not start or end with whitespace characters',
                   },
