@@ -1,7 +1,6 @@
 import { CustomerDraft, MethodType } from '@commercetools/platform-sdk';
 import { ctpClient, authClient } from '../BuildClient';
 
-
 import LSTokens from '../../../constants/constants';
 import ROUTES from '../../../utils/routes';
 
@@ -61,7 +60,6 @@ async function loginUser(
     throw new Error(e instanceof Error ? e.message : 'error');
   }
 }
-
 
 async function getCustomerToken(
   username: string,

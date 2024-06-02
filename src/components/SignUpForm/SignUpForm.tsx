@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -134,10 +135,9 @@ const SignUpForm = () => {
 
       const response = await user.createUser(userData);
       notify('Successful sign up!', true);
-        
-      await user.getCustomerToken(values.email, values.password, navigate);
-      
+      console.log(response);
 
+      await user.getCustomerToken(values.email, values.password, navigate);
     } catch (error) {
       error instanceof Error ? notify(error.message, false) : console.log('error');
     }
