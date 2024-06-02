@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-unescaped-entities */
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,7 @@ import ISignInFields from '../../types/sign.in.fields';
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import ReactFormInput from '../UI/UFormInput/ReactFormInput';
 import user from '../../shared/API/requests/user';
+import { UToaster, notify } from '../UI/Toaster/UToaster';
 
 const SignInForm = () => {
   const {
@@ -18,9 +20,12 @@ const SignInForm = () => {
   } = useForm<ISignInFields>({ mode: 'onChange' });
 
   const onSubmit: SubmitHandler<ISignInFields> = data => {
-    const { email, password } = getValues();
-    user.loginUser(email, password);
     console.log(data);
+    const { email, password } = getValues();
+    user
+      .loginUser(email, password)
+      .then(() => notify('Successful sign in!', true))
+      .catch((e: Error) => notify(e.message, false));
   };
 
   const [showPassword, setShowPassword] = useState<boolean>();
@@ -81,9 +86,6 @@ const SignInForm = () => {
                 )}
               </button>
             </div>
-            {/* <UFormButton
-
-            /> */}
             <div>
               <UFormButton
                 type={ButtonType.SUBMIT}
@@ -93,6 +95,7 @@ const SignInForm = () => {
             </div>
           </div>
         </form>
+        <UToaster />
         <p className="mt-10 text-center text-sm text-gray-500">
           Don't have an account yet?{' '}
           <Link to={ROUTES.SIGNUP}>
@@ -107,6 +110,3 @@ const SignInForm = () => {
 };
 
 export default SignInForm;
-
-// alert();
-// 'Добрый день. Уважаемые проверяющие дайте нам ,пожалуйста, время чтобы настроить сервер и поправить форму(кнопку для видимости пароля). С уважением Михаил, Сергей и Иван ',

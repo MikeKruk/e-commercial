@@ -12,6 +12,7 @@ import { inputValidators, InputKey } from '../../utils/inputValidators';
 import logo from '../../assets/logo.png';
 
 import user from '../../shared/API/requests/user';
+import { UToaster, notify } from '../UI/Toaster/UToaster';
 
 const SignUpForm = () => {
   const [isFormValid, setIsFormValid] = useState(false);
@@ -129,12 +130,12 @@ const SignUpForm = () => {
           key: 'billing',
         });
       }
-      const response = await user.createUser(userData);
-      await user.getCustomerToken(values.email, values.password);
+      await user.createUser(userData);
+      notify('Successful sign up!', true);
 
-      console.log('Submit form', response);
+      await user.getCustomerToken(values.email, values.password);
     } catch (error) {
-      console.log('Error in registration');
+      error instanceof Error ? notify(error.message, false) : console.log('error');
     }
   };
 
@@ -409,7 +410,7 @@ const SignUpForm = () => {
             />
           </div>
         </form>
-
+        <UToaster />
         <p className="mt-10 text-center text-sm text-gray-500">
           Already have an account?{' '}
           <Link to={ROUTES.SIGNIN}>
