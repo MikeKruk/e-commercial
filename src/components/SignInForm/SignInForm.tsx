@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-unescaped-entities */
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import { useState } from 'react';
 import ROUTES from '../../utils/routes';
@@ -19,14 +19,20 @@ const SignInForm = () => {
     formState: { errors, isValid },
   } = useForm<ISignInFields>({ mode: 'onChange' });
 
-  const onSubmit: SubmitHandler<ISignInFields> = data => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<ISignInFields> = async data => {
     const { email, password } = getValues();
-    user
-      .loginUser(email, password)
-      .then(() => notify('Successful sign in!', true))
-      .catch((e: Error) => notify(e.message, false));
-  };
+    
+    try {
+      await user.loginUser(email, password, navigate);
+      notify('Successful sign in!', true)
+      
+      await user.getCustomerToken(email, password, navigate);
+    } catch (error) {
+      error instanceof Error ? notify(error.message, false) : console.log('error');
+    }
+       };
 
   const [showPassword, setShowPassword] = useState<boolean>();
 

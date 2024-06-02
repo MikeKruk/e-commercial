@@ -1,14 +1,16 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaUser, FaList, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
-import { FiLogOut } from 'react-icons/fi';
+import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 
 import logo from '../../assets/logo.png';
 import ROUTES from '../../utils/routes';
 import './Header.css';
+import LSTokens from '../../constants/constants';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -29,6 +31,15 @@ const Header = () => {
       document.body.classList.remove('no-scroll');
     };
   }, [menuOpen]);
+
+  const goToSignIn = () => {
+    localStorage.clear();
+    navigate(ROUTES.SIGNIN);
+  };
+
+  const goToSignUp = () => {
+    navigate(ROUTES.SIGNUP);
+  };
 
   return (
     <header className="flex justify-between items-center bg-gray-700 h-[70px] box-border">
@@ -84,16 +95,23 @@ const Header = () => {
               <span>cart</span>
             </div>
           </Link>
-          <Link
-            to={ROUTES.SIGNIN}
-            className="flex items-center justify-center h-full"
-            onClick={hiddenMenu}
-          >
-            <div className="text-white opacity-70 hover:opacity-100 hover:bg-indigo-500 cursor-pointer h-full uppercase flex items-center px-[10px]  transition-colors duration-400 linear">
+          {localStorage.getItem(LSTokens.ACCESS_TOKEN) ? (
+            <div
+              className="text-white opacity-70 hover:opacity-100 hover:bg-indigo-500 cursor-pointer h-full uppercase flex items-center px-[10px]  transition-colors duration-400 linear"
+              onClick={goToSignIn}
+            >
               <FiLogOut className="mr-2" />
               <span>log out</span>
             </div>
-          </Link>
+          ) : (
+            <div
+              className="text-white opacity-70 hover:opacity-100 hover:bg-indigo-500 cursor-pointer h-full uppercase flex items-center px-[10px]  transition-colors duration-400 linear"
+              onClick={goToSignUp}
+            >
+              <FiLogIn className="mr-2" />
+              <span>sign up</span>
+            </div>
+          )}
         </nav>
       </div>
     </header>

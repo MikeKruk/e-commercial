@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CustomerDraft } from '@commercetools/platform-sdk';
 
 import ROUTES from '../../utils/routes';
@@ -15,6 +15,7 @@ import user from '../../shared/API/requests/user';
 import { UToaster, notify } from '../UI/Toaster/UToaster';
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
   const [isFormValid, setIsFormValid] = useState(false);
   const [useAsBillingAddress, setUseAsBillingAddress] = useState(false);
   const [useDefaultAddress, setUseDefaultAddress] = useState(false);
@@ -130,10 +131,13 @@ const SignUpForm = () => {
           key: 'billing',
         });
       }
-      await user.createUser(userData);
-      notify('Successful sign up!', true);
 
-      await user.getCustomerToken(values.email, values.password);
+      const response = await user.createUser(userData);
+      notify('Successful sign up!', true);
+        
+      await user.getCustomerToken(values.email, values.password, navigate);
+      
+
     } catch (error) {
       error instanceof Error ? notify(error.message, false) : console.log('error');
     }
@@ -176,10 +180,10 @@ const SignUpForm = () => {
     values.country,
   ]);
 
-  if (isFormValid) {
-    const dataToSignUp = values;
-    console.log(dataToSignUp);
-  }
+  // if (isFormValid) {
+  //   const dataToSignUp = values;
+  //   console.log(dataToSignUp);
+  // }
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-3 lg:px-8 bg-[#fff] max-w-[700px] rounded-[20px] mx-auto my-6">

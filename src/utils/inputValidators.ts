@@ -9,7 +9,9 @@ const calculateAge = (birthdate: string): boolean => {
 const inputValidators = {
   email: (email: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$|^$/.test(email),
   password: (password: string): boolean =>
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$|^$/.test(password),
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/.test(
+      password,
+    ),
   first_name: (firstName: string): boolean => /^[a-zA-Z]+$|^$/.test(firstName),
   last_name: (lastName: string): boolean => /^[a-zA-Z]+$|^$/.test(lastName),
   birthdate: (birthdate: string): boolean => calculateAge(birthdate),
@@ -31,7 +33,7 @@ const getErrorMessage = (key: string | undefined): string => {
     case 'email':
       return 'Wrong or Invalid email address. Please correct and try again.';
     case 'password':
-      return 'Password should contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number';
+      return 'Your password must contain at least 8 characters, at least one uppercase and lowercase letter, one digit, and one special character (e.g., !@#$%^&*), and must not start or end with whitespace characters';
     case 'first_name':
     case 'last_name':
       return 'Must contain at least one character and no special characters or numbers';
