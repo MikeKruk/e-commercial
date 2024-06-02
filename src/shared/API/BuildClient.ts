@@ -1,3 +1,4 @@
+import SdkAuth from '@commercetools/sdk-auth';
 import fetch from 'node-fetch';
 
 import {
@@ -6,35 +7,46 @@ import {
   type HttpMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 
-const projectKey = 'e-commercial-team-key';
+const { CLIENT_ID, CLIENT_SECRET, SCOPE, PROJECT_KEY, API_URL, AUTH_URL } = process.env;
 
-const scopes = [
-  'create_anonymous_token:e-commercial-team-key manage_categories:e-commercial-team-key manage_types:e-commercial-team-key manage_my_payments:e-commercial-team-key manage_project_settings:e-commercial-team-key manage_order_edits:e-commercial-team-key manage_my_profile:e-commercial-team-key manage_tax_categories:e-commercial-team-key manage_customer_groups:e-commercial-team-key manage_shopping_lists:e-commercial-team-key manage_orders:e-commercial-team-key manage_extensions:e-commercial-team-key manage_my_shopping_lists:e-commercial-team-key manage_discount_codes:e-commercial-team-key manage_payments:e-commercial-team-key manage_products:e-commercial-team-key manage_my_orders:e-commercial-team-key manage_customers:e-commercial-team-key manage_cart_discounts:e-commercial-team-key manage_shipping_methods:e-commercial-team-key',
-];
+if (!CLIENT_ID || !CLIENT_SECRET || !SCOPE || !PROJECT_KEY || !API_URL || !AUTH_URL) {
+  throw new Error('Enviroment variables are undifined');
+}
 
 const authMiddlewareOptions: AuthMiddlewareOptions = {
-  host: 'https://auth.europe-west1.gcp.commercetools.com',
-  projectKey,
+  host: AUTH_URL,
+  projectKey: PROJECT_KEY,
   credentials: {
-    clientId: 'oQQxD9-ubX-EaV6y5trdQb3x',
-    clientSecret: 'nS5DaVkbcD4fG94F27bTDVAv7ewMG-qy',
+    clientId: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
   },
-  scopes,
+  scopes: [SCOPE],
   fetch,
 };
 
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
-  host: 'https://api.europe-west1.gcp.commercetools.com',
+  host: API_URL,
   fetch,
 };
 
+const authClient = new SdkAuth({
+  host: AUTH_URL,
+  projectKey: PROJECT_KEY,
+  credentials: {
+    clientId: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
+  },
+  scopes: [SCOPE],
+  fetch,
+});
+
 // Export the ClientBuilder
 const ctpClient = new ClientBuilder()
-  .withProjectKey(projectKey)
+  .withProjectKey(PROJECT_KEY)
   .withClientCredentialsFlow(authMiddlewareOptions)
   .withHttpMiddleware(httpMiddlewareOptions)
   .withLoggerMiddleware() // Include middleware for logging
   .build();
 
-export default ctpClient;
+export { ctpClient, authClient };
