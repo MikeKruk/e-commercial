@@ -7,6 +7,7 @@ import ROUTES from '../../utils/routes';
 
 const MainPage = () => {
   const navigate = useNavigate();
+  console.log(1);
   // const [user, setCurrentUser] = useCurrentUser();
   return (
     <div className="mx-auto my-6 flex justify-center items-center flex-col gap-6">
