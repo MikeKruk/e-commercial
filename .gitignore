@@ -1,0 +1,12 @@
+# TypeScript cache*.tsbuildinfo
+# Optional npm cache directory
+.npm
+# Yarn Integrity file.yarn-integrity
+# dotenv environment variables file
+.env.env.test
+.env
+.DS_Store
+node_modules
+dist
+coverage
+.vscode
