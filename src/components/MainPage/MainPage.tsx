@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import ROUTES from '../../utils/routes';
+import products from '../../shared/API/requests/products';
 // import { useCurrentUser } from '../../store/user/hooks';
 
 const MainPage = () => {
   const navigate = useNavigate();
   console.log(1);
   // const [user, setCurrentUser] = useCurrentUser();
+
   return (
     <div className="mx-auto my-6 flex justify-center items-center flex-col gap-6">
       {/* {user} */}
@@ -29,7 +31,10 @@ const MainPage = () => {
           text="Catalog"
           icon={<FaList />}
           className="flex items-center"
-          onClick={() => navigate(ROUTES.NOT_FOUND)}
+          onClick={() => {
+            navigate(ROUTES.NOT_FOUND);
+            products.getProducts();
+          }}
         />
       </div>
       <div className="w-4/12">
