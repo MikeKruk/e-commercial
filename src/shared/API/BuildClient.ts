@@ -7,9 +7,29 @@ import {
   type HttpMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 
-const { CLIENT_ID, CLIENT_SECRET, SCOPE, PROJECT_KEY, API_URL, AUTH_URL } = process.env;
+const {
+  CLIENT_ID,
+  CLIENT_SECRET,
+  SCOPE,
+  PROJECT_KEY,
+  API_URL,
+  AUTH_URL,
+  PRODUCTS_SCOPE,
+  PRODUCTS_CLIENT_ID,
+  PRODUCTS_CLIENT_SECRET,
+} = process.env;
 
-if (!CLIENT_ID || !CLIENT_SECRET || !SCOPE || !PROJECT_KEY || !API_URL || !AUTH_URL) {
+if (
+  !CLIENT_ID ||
+  !CLIENT_SECRET ||
+  !SCOPE ||
+  !PROJECT_KEY ||
+  !API_URL ||
+  !AUTH_URL ||
+  !PRODUCTS_SCOPE ||
+  !PRODUCTS_CLIENT_ID ||
+  !PRODUCTS_CLIENT_SECRET
+) {
   throw new Error('Enviroment variables are undifined');
 }
 
@@ -21,6 +41,17 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
     clientSecret: CLIENT_SECRET,
   },
   scopes: [SCOPE],
+  fetch,
+};
+
+const productsAuthMiddlewareOptions: AuthMiddlewareOptions = {
+  host: AUTH_URL,
+  projectKey: PROJECT_KEY,
+  credentials: {
+    clientId: PRODUCTS_CLIENT_ID,
+    clientSecret: PRODUCTS_CLIENT_SECRET,
+  },
+  scopes: [PRODUCTS_SCOPE],
   fetch,
 };
 
@@ -49,4 +80,11 @@ const ctpClient = new ClientBuilder()
   .withLoggerMiddleware() // Include middleware for logging
   .build();
 
-export { ctpClient, authClient };
+const productsCtpClient = new ClientBuilder()
+  .withProjectKey(PROJECT_KEY)
+  .withClientCredentialsFlow(productsAuthMiddlewareOptions)
+  .withHttpMiddleware(httpMiddlewareOptions)
+  .withLoggerMiddleware() // Include middleware for logging
+  .build();
+
+export { ctpClient, authClient, productsCtpClient };
