@@ -1,8 +1,10 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Cookies from 'js-cookie';
 import { CustomerDraft, MethodType } from '@commercetools/platform-sdk';
 import { ctpClient, authClient } from '../BuildClient';
 
-import LSTokens from '../../../constants/constants';
-import ROUTES from '../../../utils/routes';
+import LSTokens from '../../constants/constants';
+import ROUTES from '../../utils/routes';
 
 const { PROJECT_KEY } = process.env;
 
@@ -71,6 +73,7 @@ async function getCustomerToken(
       username,
       password,
     });
+    Cookies.set(LSTokens.ACCESS_TOKEN, tokenResponse.access_token);
     localStorage.setItem(LSTokens.ACCESS_TOKEN, tokenResponse.access_token);
     localStorage.setItem(LSTokens.REFRESH_TOKEN, tokenResponse.refresh_token);
     navigate(ROUTES.MAIN_PAGE);
