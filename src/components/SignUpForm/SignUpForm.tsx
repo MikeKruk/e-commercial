@@ -134,7 +134,6 @@ const SignUpForm = () => {
       }
 
       const response = await user.createUser(userData);
-      notify('Successful sign up!', true);
       console.log(response);
 
       await user.getCustomerToken(values.email, values.password, navigate);

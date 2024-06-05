@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import ROUTES from '../../utils/routes';
+import { UToaster } from '../UI/Toaster/UToaster';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ const MainPage = () => {
           onClick={() => navigate(ROUTES.NOT_FOUND)}
         />
       </div>
+      <UToaster />
     </div>
   );
 };
