@@ -1,18 +1,27 @@
+import fetch from 'node-fetch';
 import { MethodType } from '@commercetools/platform-sdk';
-import { productsCtpClient } from '../BuildClient';
+import { LSTokens } from '../../../constants/constants';
 
-const { PROJECT_KEY } = process.env;
+const { PROJECT_KEY, API_URL } = process.env;
+
 async function getProducts() {
   try {
-    const request = {
-      uri: `/${PROJECT_KEY}/products`,
-      method: 'GET' as MethodType,
-    };
+    const accessToken = localStorage.getItem(LSTokens.ACCESS_TOKEN);
+    const url = `${API_URL}/${PROJECT_KEY}/products`;
 
-    const response = await productsCtpClient.execute(request);
-    console.log(response);
+    const response = await fetch(url, {
+      method: 'GET' as MethodType,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    console.log(data);
+    return data;
   } catch (e) {
-    console.log(e);
+    throw new Error(e instanceof Error ? e.message : 'error');
   }
 }
 
