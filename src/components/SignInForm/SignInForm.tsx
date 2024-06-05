@@ -9,7 +9,7 @@ import ROUTES from '../../utils/routes';
 import ISignInFields from '../../types/sign.in.fields';
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
 import ReactFormInput from '../UI/UFormInput/ReactFormInput';
-import user from '../../shared/API/requests/user';
+import user from '../../API/requests/user';
 import { UToaster, notify } from '../UI/Toaster/UToaster';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/constants';
 

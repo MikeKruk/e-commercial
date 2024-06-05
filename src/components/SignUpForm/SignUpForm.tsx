@@ -12,7 +12,7 @@ import UFormCheckbox from '../UI/UFormCheckbox/UFormCheckbox';
 import { inputValidators, InputKey } from '../../utils/inputValidators';
 import logo from '../../assets/logo.png';
 
-import user from '../../shared/API/requests/user';
+import user from '../../API/requests/user';
 import { UToaster, notify } from '../UI/Toaster/UToaster';
 
 const SignUpForm = () => {
