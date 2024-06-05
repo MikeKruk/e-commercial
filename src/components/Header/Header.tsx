@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import logo from '../../assets/logo.png';
 import ROUTES from '../../utils/routes';
 import './Header.css';
-import LSTokens from '../../constants/constants';
+import { LSTokens } from '../../constants/constants';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
