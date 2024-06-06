@@ -4,20 +4,40 @@ export interface CatalogState {
   errorGetAllActsTypes: string | null;
 }
 
-export interface Card {
-  id: number;
+export interface DataGetCatalogApi {
+  id: string;
+  masterData: {
+    current: {
+      description: {
+        'en-US': string;
+      };
+      name: {
+        'en-US': string;
+      };
+      masterVariant: {
+        images: ImageUrl[];
+      };
+    };
+  };
 }
 
-export interface Product {
-  id: number;
+export interface ImageUrl {
+  url: string;
+}
+
+export interface DataImage {
+  id: string;
+  images: ImageUrl[];
+}
+
+export interface Card {
+  id: string;
+  description: string;
   name: string;
-  href: string;
-  imageSrc: string[];
-  price: string;
-  color: string;
+  images: ImageUrl[];
 }
 
 export interface ImageModalProps {
-  product: Product;
+  dataImage: DataImage;
   onClose: () => void;
 }

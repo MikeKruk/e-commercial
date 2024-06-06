@@ -5,7 +5,7 @@ import { ImageModalProps } from '../../types/catalog';
 
 import './ImageModal.css';
 
-const ImageModal: React.FC<ImageModalProps> = ({ product, onClose }) => {
+const ImageModal: React.FC<ImageModalProps> = ({ dataImage, onClose }) => {
   const [position, setPosition] = useState(0);
   const [activeIndicator, setActiveIndicator] = useState(0);
 
@@ -22,7 +22,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ product, onClose }) => {
     setPosition(prevPosition => {
       const newPosition = Math.max(
         prevPosition - 600,
-        -((product.imageSrc.length - 1) * 600),
+        -((dataImage.images.length - 1) * 600),
       );
       const newActiveIndicator = Math.abs(newPosition / 600);
       setActiveIndicator(newActiveIndicator);
@@ -56,16 +56,13 @@ const ImageModal: React.FC<ImageModalProps> = ({ product, onClose }) => {
         </button>
         <div className="slider-wrapper">
           <ul className="slider-line" style={{ transform: `translateX(${position}px)` }}>
-            {product.imageSrc.map((imageSrc, index) => (
-              <li key={product.id} className="slider-item">
+            {dataImage.images.map((imageSrc, index) => (
+              <li key={dataImage.id} className="slider-item">
                 <img
-                  src={imageSrc}
+                  src={imageSrc.url}
                   alt={`Product ${index + 1}`}
                   className="h-full w-full object-cover object-center lg:w-full"
                 />
-                <h3 className="bg-white text-center font-bold text-3xl text-black position: absolute bottom-0 py-2 w-full">
-                  {product.name}
-                </h3>
               </li>
             ))}
           </ul>
@@ -80,7 +77,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ product, onClose }) => {
         </button>
       </div>
       <ul className="indicators">
-        {product.imageSrc.map((image, index) => (
+        {dataImage.images.map((image, index) => (
           <button
             type="button"
             key={`Product ${image}`}
