@@ -57,11 +57,11 @@ const ImageModal: React.FC<ImageModalProps> = ({ dataImage, onClose }) => {
         <div className="slider-wrapper">
           <ul className="slider-line" style={{ transform: `translateX(${position}px)` }}>
             {dataImage.images.map((imageSrc, index) => (
-              <li key={dataImage.id} className="slider-item">
+              <li key={`${imageSrc.url}`} className="slider-item">
                 <img
                   src={imageSrc.url}
                   alt={`Product ${index + 1}`}
-                  className="h-full w-full object-cover object-center lg:w-full"
+                  className="h-full w-full object-contain object-center lg:w-full"
                 />
               </li>
             ))}
@@ -80,7 +80,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ dataImage, onClose }) => {
         {dataImage.images.map((image, index) => (
           <button
             type="button"
-            key={`Product ${image}`}
+            key={`Product ${image.url}`}
             className={`indicators-item ${activeIndicator === index ? 'active' : ''}`}
             onClick={() => indicatorClick(index)}
             aria-label="Indicator"

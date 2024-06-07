@@ -8,7 +8,6 @@ import { DataImage } from '../../types/catalog';
 
 const CatalogPage = () => {
   const [dataImage, setDataImage] = useState<DataImage | null>(null);
-
   const dispatch = useAppDispatch();
   const { cardsList } = useAppSelector(state => state.catalog);
 
@@ -20,10 +19,12 @@ const CatalogPage = () => {
 
   const openImageSlider = (data: DataImage) => {
     setDataImage(data);
+    document.querySelector('body')?.classList.add('lock');
   };
 
   const closeImageSlider = () => {
     setDataImage(null);
+    document.querySelector('body')?.classList.remove('lock');
   };
 
   return (
