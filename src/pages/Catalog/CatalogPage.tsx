@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import ImageModal from '../../components/ImageModal/ImageModal';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import useBodyClass from '../../store/catalog/hooks';
 
 import { getCatalogApi } from '../../API/requests/catalog';
 import { DataImage } from '../../types/catalog';
@@ -19,13 +20,13 @@ const CatalogPage = () => {
 
   const openImageSlider = (data: DataImage) => {
     setDataImage(data);
-    document.querySelector('body')?.classList.add('lock');
   };
 
   const closeImageSlider = () => {
     setDataImage(null);
-    document.querySelector('body')?.classList.remove('lock');
   };
+
+  useBodyClass('lock', !!dataImage);
 
   return (
     <div className="bg-white">
