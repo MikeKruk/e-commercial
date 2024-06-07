@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaUser, FaList, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
 import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 import logo from '../../assets/logo.png';
 import ROUTES from '../../utils/routes';
@@ -76,7 +77,7 @@ const Header = () => {
             </div>
           </Link>
           <Link
-            to={ROUTES.NOT_FOUND}
+            to={ROUTES.CATALOG}
             className="flex items-center justify-center h-full"
             onClick={hiddenMenu}
           >
@@ -95,7 +96,7 @@ const Header = () => {
               <span>cart</span>
             </div>
           </Link>
-          {localStorage.getItem(LSTokens.ACCESS_TOKEN) ? (
+          {Cookies.get(LSTokens.ACCESS_TOKEN) ? (
             <div
               className="text-white opacity-70 hover:opacity-100 hover:bg-indigo-500 cursor-pointer h-full uppercase flex items-center px-[10px]  transition-colors duration-400 linear"
               onClick={goToSignIn}

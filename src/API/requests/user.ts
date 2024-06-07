@@ -20,8 +20,6 @@ async function getCustomerToken(
       password,
     });
     Cookies.set(LSTokens.ACCESS_TOKEN, tokenResponse.access_token);
-    localStorage.setItem(LSTokens.ACCESS_TOKEN, tokenResponse.access_token);
-    localStorage.setItem(LSTokens.REFRESH_TOKEN, tokenResponse.refresh_token);
     navigate(ROUTES.MAIN_PAGE);
     return tokenResponse.access_token;
   } catch (e) {
