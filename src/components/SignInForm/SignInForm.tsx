@@ -5,6 +5,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import { useState } from 'react';
+
+import { useAppDispatch } from '../../store/hooks';
 import ROUTES from '../../utils/routes';
 import ISignInFields from '../../types/sign.in.fields';
 import UFormButton, { ButtonType } from '../UI/UFormButton/UFormButton';
@@ -22,15 +24,18 @@ const SignInForm = () => {
   } = useForm<ISignInFields>({ mode: 'onChange' });
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<ISignInFields> = async _data => {
     const { email, password } = getValues();
 
     try {
-      await user.loginUser(email, password, navigate);
+      // await user.loginUser(email, password, navigate);
+      await dispatch(user.loginUser({ email, password, navigate }));
       notify('Successful sign in!', true);
 
-      await user.getCustomerToken(email, password, navigate);
+      // await user.getCustomerToken({ username, password, navigate });
+      await dispatch(user.getCustomerToken({ username: email, password, navigate }));
     } catch (error) {
       error instanceof Error ? notify(error.message, false) : console.log('error');
     }

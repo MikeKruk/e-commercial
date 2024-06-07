@@ -11,7 +11,7 @@ import UFormSelect, { SelectCountryKey } from '../UI/UFormSelect/UFormSelect';
 import UFormCheckbox from '../UI/UFormCheckbox/UFormCheckbox';
 import { inputValidators, InputKey } from '../../utils/inputValidators';
 import logo from '../../assets/logo.png';
-
+import { useAppDispatch } from '../../store/hooks';
 import user from '../../API/requests/user';
 import { UToaster, notify } from '../UI/Toaster/UToaster';
 
@@ -21,6 +21,8 @@ const SignUpForm = () => {
   const [useAsBillingAddress, setUseAsBillingAddress] = useState(false);
   const [useDefaultAddress, setUseDefaultAddress] = useState(false);
   const [useDefaultBillingAddress, setUseDefaultBillingAddress] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const [values, setValues] = useState({
     email: '',
@@ -133,10 +135,16 @@ const SignUpForm = () => {
         });
       }
 
-      const response = await user.createUser(userData);
+      const response = await dispatch(user.createUser(userData));
       console.log(response);
 
-      await user.getCustomerToken(values.email, values.password, navigate);
+      await dispatch(
+        user.getCustomerToken({
+          username: values.email,
+          password: values.password,
+          navigate,
+        }),
+      );
     } catch (error) {
       error instanceof Error ? notify(error.message, false) : console.log('error');
     }
