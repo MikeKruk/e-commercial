@@ -8,12 +8,14 @@ import { Card, DataGetCatalogApi } from '../../types/catalog';
 const { API_URL, PROJECT_KEY } = process.env;
 
 const getClearObject = (data: DataGetCatalogApi[]) => {
+  console.log(data);
   return data.map(item => {
     return {
       id: item.id,
       description: item.masterData.current.description['en-US'],
       name: item.masterData.current.name['en-US'],
       images: item.masterData.current.masterVariant.images,
+      price: item.masterData.current.masterVariant.prices[0].value.centAmount / 100,
     };
   });
 };

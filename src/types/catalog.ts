@@ -16,6 +16,7 @@ export interface DataGetCatalogApi {
       };
       masterVariant: {
         images: ImageUrl[];
+        prices: Price[];
       };
     };
   };
@@ -23,6 +24,12 @@ export interface DataGetCatalogApi {
 
 export interface ImageUrl {
   url: string;
+}
+
+export interface Price {
+  value: {
+    centAmount: number;
+  };
 }
 
 export interface DataImage {
@@ -35,6 +42,7 @@ export interface Card {
   description: string;
   name: string;
   images: ImageUrl[];
+  price: number;
 }
 
 export interface ImageModalProps {
