@@ -1,6 +1,7 @@
 const LSTokens = {
   ACCESS_TOKEN: 'access_token',
   REFRESH_TOKEN: 'refresh_token',
+  ANONYMOUS_TOKEN: 'anonymous_token',
 };
 
 const PASSWORD_REGEX =

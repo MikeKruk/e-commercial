@@ -11,8 +11,11 @@ const authInterceptor = (
     configer.headers = configer.headers || {};
 
     const accessToken = Cookies.get(LSTokens.ACCESS_TOKEN);
+    const anonymousToken = Cookies.get(LSTokens.ANONYMOUS_TOKEN);
     if (accessToken) {
       configer.headers.Authorization = `Bearer ${accessToken}`;
+    } else if (anonymousToken) {
+      configer.headers.Authorization = `Bearer ${anonymousToken}`;
     }
   }
 
