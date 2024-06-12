@@ -34,7 +34,7 @@ const Header = () => {
   }, [menuOpen]);
 
   const goToSignIn = () => {
-    localStorage.clear();
+    Cookies.remove('access_token');
     navigate(ROUTES.SIGNIN);
   };
 
