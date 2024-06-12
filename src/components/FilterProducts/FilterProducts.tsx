@@ -6,14 +6,21 @@ import 'rc-slider/assets/index.css';
 import './FilterProduct.css';
 import { useBodyClass, useClickOutside } from '../../store/catalog/hooks';
 import UFilterButton from '../UI/UFilterButton/UFilterButton';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setMinPrice, setMaxPrice } from '../../store/catalog/catalogSlice';
+import { MAX_PRICE } from '../../constants/constants';
 
 const FilterProducts = () => {
+  const { minPrice, maxPrice } = useAppSelector(state => state.catalog);
+
   const [isOpen, setIsOpen] = useState(false);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(150);
+  const [localMinPrice, setLocalMinPrice] = useState(minPrice);
+  const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedDiscount, setSelectedDiscount] = useState(false);
   const [isFilterChange, setIsFilterChange] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const watchFilterState = () => {
     setIsFilterChange(true);
@@ -30,21 +37,23 @@ const FilterProducts = () => {
   const handleMinPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     if (value < 0) return;
-    setMinPrice(value);
+    setLocalMinPrice(value);
+    dispatch(setMinPrice(value));
     watchFilterState();
   };
 
   const handleMaxPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     if (value < 0) return;
-    setMaxPrice(value);
+    setLocalMaxPrice(value);
+    dispatch(setMaxPrice(value));
     watchFilterState();
   };
 
   const onSliderChange = (value: number | number[]) => {
     if (Array.isArray(value)) {
-      setMinPrice(value[0]);
-      setMaxPrice(value[1]);
+      setLocalMinPrice(value[0]);
+      setLocalMaxPrice(value[1]);
       watchFilterState();
     }
   };
@@ -60,15 +69,18 @@ const FilterProducts = () => {
   };
 
   const handleResetFilter = () => {
-    setMinPrice(0);
-    setMaxPrice(150);
+    setLocalMinPrice(0);
+    setLocalMaxPrice(MAX_PRICE);
     setSelectedSize('');
     setSelectedDiscount(false);
     setIsFilterChange(false);
+    dispatch(setMinPrice(0));
+    dispatch(setMaxPrice(MAX_PRICE));
   };
 
   const handleApplyFilter = () => {
-    console.log('Apply filter');
+    dispatch(setMinPrice(localMinPrice));
+    dispatch(setMaxPrice(localMaxPrice));
     setIsOpen(false);
   };
 
@@ -110,18 +122,26 @@ const FilterProducts = () => {
                   <div className="input-group">
                     <label>
                       Min:
-                      <input type="number" value={minPrice} onChange={handleMinPrice} />
+                      <input
+                        type="number"
+                        value={localMinPrice}
+                        onChange={handleMinPrice}
+                      />
                     </label>
                     <label>
                       Max:
-                      <input type="number" value={maxPrice} onChange={handleMaxPrice} />
+                      <input
+                        type="number"
+                        value={localMaxPrice}
+                        onChange={handleMaxPrice}
+                      />
                     </label>
                   </div>
                   <Slider
                     range
                     min={0}
-                    max={150}
-                    value={[minPrice, maxPrice]}
+                    max={MAX_PRICE}
+                    value={[localMinPrice, localMaxPrice]}
                     onChange={onSliderChange}
                     allowCross={false}
                   />
@@ -184,7 +204,11 @@ const FilterProducts = () => {
               <div className="filter filter-sidebar__btn-block">
                 <div className="reset">
                   <UFilterButton
-                    isDisabled={!isFilterChange}
+                    isDisabled={
+                      !isFilterChange &&
+                      localMinPrice === 0 &&
+                      localMaxPrice === MAX_PRICE
+                    }
                     text="Reset"
                     className="flex items-center"
                     onClick={handleResetFilter}

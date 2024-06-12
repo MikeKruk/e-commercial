@@ -11,13 +11,19 @@ import { DataImage } from '../../types/catalog';
 const CatalogPage = () => {
   const [dataImage, setDataImage] = useState<DataImage | null>(null);
   const dispatch = useAppDispatch();
-  const { cardsList } = useAppSelector(state => state.catalog);
+  const { cardsList, minPrice, maxPrice } = useAppSelector(state => state.catalog);
+
+  const filteredCardList = cardsList.filter(
+    item => item.price >= minPrice && item.price <= maxPrice,
+  );
 
   useEffect(() => {
-    dispatch(getCatalogApi());
-  }, []);
+    dispatch(getCatalogApi({ minPrice, maxPrice }));
+  }, [minPrice, maxPrice, dispatch]);
 
-  console.log(cardsList);
+  useEffect(() => {
+    console.log('cardsList:', cardsList);
+  }, [cardsList]);
 
   const openImageSlider = (data: DataImage) => {
     setDataImage(data);
@@ -39,7 +45,7 @@ const CatalogPage = () => {
         </h2>
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {cardsList.map(({ description, id, images, name, price }) => (
+          {filteredCardList.map(({ description, id, images, name, price }) => (
             <div
               key={id}
               className="group flex flex-col rounded-md border-2"

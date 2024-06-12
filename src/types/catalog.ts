@@ -2,6 +2,8 @@ export interface CatalogState {
   cardsList: Card[];
   statusGetAllActsTypes: string;
   errorGetAllActsTypes: string | null;
+  minPrice: number;
+  maxPrice: number;
 }
 
 export interface DataGetCatalogApi {
@@ -30,6 +32,11 @@ export interface Price {
   value: {
     centAmount: number;
   };
+}
+
+export interface FilterParams {
+  minPrice: number;
+  maxPrice: number;
 }
 
 export interface DataImage {
