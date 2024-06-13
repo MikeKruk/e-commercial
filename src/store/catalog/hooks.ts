@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const useBodyClass = (className: string, condition: boolean) => {
+export const useBodyClass = (className: string, condition: boolean) => {
   useEffect(() => {
     if (condition) {
       document.body.classList.add(className);
@@ -14,4 +14,17 @@ const useBodyClass = (className: string, condition: boolean) => {
   }, [className, condition]);
 };
 
-export default useBodyClass;
+export const useClickOutside = (
+  ref: React.RefObject<HTMLElement>,
+  callback: () => void,
+) => {
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        callback();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [ref, callback]);
+};

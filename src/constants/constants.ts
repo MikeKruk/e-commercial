@@ -9,4 +9,6 @@ const PASSWORD_REGEX =
 
 const EMAIL_REGEX = /^s*[a-zA-Z0-9._%+-/]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}s*$/;
 
-export { LSTokens, EMAIL_REGEX, PASSWORD_REGEX };
+const MAX_PRICE = 150;
+
+export { LSTokens, EMAIL_REGEX, PASSWORD_REGEX, MAX_PRICE };
