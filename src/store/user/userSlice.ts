@@ -20,6 +20,18 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
+      .addCase(user.getAnonymousToken.pending, state => {
+        state.statusGetAllActsTypes = 'loading';
+        state.errorGetAllActsTypes = null;
+      })
+      .addCase(user.getAnonymousToken.fulfilled, (state, action) => {
+        state.statusGetAllActsTypes = 'succeeded';
+        state.accessToken = action.payload;
+      })
+      .addCase(user.getAnonymousToken.rejected, (state, action) => {
+        state.statusGetAllActsTypes = 'failed';
+        state.errorGetAllActsTypes = action.error.message ?? null;
+      })
       .addCase(user.getCustomerToken.pending, state => {
         state.statusGetAllActsTypes = 'loading';
         state.errorGetAllActsTypes = null;

@@ -47,6 +47,19 @@ const getCustomerToken = createAsyncThunk(
   },
 );
 
+const getAnonymousToken = createAsyncThunk(
+  'user/getAnonymousToken',
+  async (): Promise<string> => {
+    try {
+      const tokenResponse = await authClient.anonymousFlow();
+      Cookies.set(LSTokens.ANONYMOUS_TOKEN, tokenResponse.access_token);
+      return tokenResponse.access_token;
+    } catch (e) {
+      throw new Error(e instanceof Error ? e.message : 'error');
+    }
+  },
+);
+
 // async function createUser(userData: CustomerDraft) {
 //   try {
 //     const request = {
@@ -144,6 +157,7 @@ const loginUser = createAsyncThunk(
 const user = {
   createUser,
   getCustomerToken,
+  getAnonymousToken,
   loginUser,
 };
 
