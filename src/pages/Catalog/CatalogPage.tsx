@@ -52,10 +52,9 @@ const CatalogPage = () => {
     setDataImage(null);
   };
 
-  const resetFilter = () => {
-    dispatch(setPrice({ min: 0, max: MAX_PRICE }));
-    dispatch(setSelectedCategory(''));
-  };
+  const resetPriceFilter = () => dispatch(setPrice({ min: 0, max: MAX_PRICE }));
+
+  const resetCategoryFilter = () => dispatch(setSelectedCategory(''));
 
   useBodyClass('lock', !!dataImage);
 
@@ -82,7 +81,7 @@ const CatalogPage = () => {
                   <button
                     type="button"
                     className="hover:bg-indigo-500 rounded-full p-.5"
-                    onClick={resetFilter}
+                    onClick={resetPriceFilter}
                     aria-label="Close"
                   >
                     <FaTimes />
@@ -97,7 +96,7 @@ const CatalogPage = () => {
                   <button
                     type="button"
                     className="hover:bg-indigo-500 rounded-full p-.5"
-                    onClick={resetFilter}
+                    onClick={resetCategoryFilter}
                     aria-label="Close"
                   >
                     <FaTimes />
