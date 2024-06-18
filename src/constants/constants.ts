@@ -10,5 +10,7 @@ const PASSWORD_REGEX =
 const EMAIL_REGEX = /^s*[a-zA-Z0-9._%+-/]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}s*$/;
 
 const MAX_PRICE = 150;
+const DISCONT_VALUE = 35;
+const MAX_LIMIT = 75;
 
-export { LSTokens, EMAIL_REGEX, PASSWORD_REGEX, MAX_PRICE };
+export { LSTokens, EMAIL_REGEX, PASSWORD_REGEX, MAX_PRICE, DISCONT_VALUE, MAX_LIMIT };

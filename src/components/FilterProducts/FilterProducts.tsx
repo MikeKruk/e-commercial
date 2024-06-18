@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FaFilter, FaTimes } from 'react-icons/fa';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -6,25 +6,39 @@ import 'rc-slider/assets/index.css';
 import './FilterProduct.css';
 import { useBodyClass, useClickOutside } from '../../store/catalog/hooks';
 import UFilterButton from '../UI/UFilterButton/UFilterButton';
+import UFilterSelect from '../UI/UFilterSelect/UFilterSelect';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setMinPrice, setMaxPrice } from '../../store/catalog/catalogSlice';
+import {
+  setPrice,
+  setSelectedCategory,
+  setSelectedDiscount,
+} from '../../store/catalog/catalogSlice';
 import { MAX_PRICE } from '../../constants/constants';
 
 const FilterProducts = () => {
-  const { minPrice, maxPrice } = useAppSelector(state => state.catalog);
+  const dispatch = useAppDispatch();
+
+  const { priceRange, selectedCategory } = useAppSelector(state => state.catalog);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [localMinPrice, setLocalMinPrice] = useState(minPrice);
-  const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedDiscount, setSelectedDiscount] = useState(false);
+  const [localSelectedDiscount, setLocalSelectedDiscount] = useState(false);
   const [isFilterChange, setIsFilterChange] = useState(false);
 
-  const dispatch = useAppDispatch();
+  const [priceFilter, setPriceFilter] = useState({
+    min: priceRange.min,
+    max: priceRange.max,
+  });
+
+  const [categoryFilter, setCategoryFilter] = useState(selectedCategory);
 
   const watchFilterState = () => {
     setIsFilterChange(true);
   };
+
+  useEffect(() => {
+    setPriceFilter({ min: priceRange.min, max: priceRange.max });
+    setCategoryFilter(selectedCategory);
+  }, [priceRange, selectedCategory]);
 
   const showOptions = () => {
     setIsOpen(!isOpen);
@@ -34,53 +48,53 @@ const FilterProducts = () => {
     setIsOpen(false);
   };
 
-  const handleMinPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const selectMinPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     if (value < 0) return;
-    setLocalMinPrice(value);
-    dispatch(setMinPrice(value));
+    setPriceFilter({ ...priceFilter, min: value });
+    dispatch(setPrice({ min: value }));
     watchFilterState();
   };
 
-  const handleMaxPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const selectMaxPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     if (value < 0) return;
-    setLocalMaxPrice(value);
-    dispatch(setMaxPrice(value));
+    setPriceFilter({ ...priceFilter, max: value });
+    dispatch(setPrice({ max: value }));
     watchFilterState();
   };
 
   const onSliderChange = (value: number | number[]) => {
     if (Array.isArray(value)) {
-      setLocalMinPrice(value[0]);
-      setLocalMaxPrice(value[1]);
+      setPriceFilter({ ...priceFilter, min: value[0], max: value[1] });
       watchFilterState();
     }
   };
 
-  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedSize(e.target.value);
+  const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCategoryFilter(e.target.value);
     watchFilterState();
   };
 
-  const handleDiscount = () => {
-    setSelectedDiscount(!selectedDiscount);
+  const selectDiscount = () => {
+    setLocalSelectedDiscount(!localSelectedDiscount);
     watchFilterState();
   };
 
-  const handleResetFilter = () => {
-    setLocalMinPrice(0);
-    setLocalMaxPrice(MAX_PRICE);
-    setSelectedSize('');
-    setSelectedDiscount(false);
+  const resetFilter = () => {
+    setPriceFilter({ min: 0, max: MAX_PRICE });
+    setCategoryFilter('');
+    setLocalSelectedDiscount(false);
     setIsFilterChange(false);
-    dispatch(setMinPrice(0));
-    dispatch(setMaxPrice(MAX_PRICE));
+    dispatch(setPrice({ min: 0, max: MAX_PRICE }));
+    dispatch(setSelectedDiscount(false));
+    dispatch(setSelectedCategory(''));
   };
 
-  const handleApplyFilter = () => {
-    dispatch(setMinPrice(localMinPrice));
-    dispatch(setMaxPrice(localMaxPrice));
+  const applyFilter = () => {
+    dispatch(setPrice({ min: priceFilter.min, max: priceFilter.max }));
+    dispatch(setSelectedDiscount(localSelectedDiscount));
+    dispatch(setSelectedCategory(categoryFilter));
     setIsOpen(false);
   };
 
@@ -124,16 +138,16 @@ const FilterProducts = () => {
                       Min:
                       <input
                         type="number"
-                        value={localMinPrice}
-                        onChange={handleMinPrice}
+                        value={priceFilter.min}
+                        onChange={selectMinPrice}
                       />
                     </label>
                     <label>
                       Max:
                       <input
                         type="number"
-                        value={localMaxPrice}
-                        onChange={handleMaxPrice}
+                        value={priceFilter.max}
+                        onChange={selectMaxPrice}
                       />
                     </label>
                   </div>
@@ -141,7 +155,7 @@ const FilterProducts = () => {
                     range
                     min={0}
                     max={MAX_PRICE}
-                    value={[localMinPrice, localMaxPrice]}
+                    value={[priceFilter.min, priceFilter.max]}
                     onChange={onSliderChange}
                     allowCross={false}
                   />
@@ -149,37 +163,20 @@ const FilterProducts = () => {
               </div>
               <div className="filter filter-sidebar__size">
                 <h3 className="text-2xl font-regular tracking-tight text-gray-900 mb-4">
-                  Size
+                  Category
                 </h3>
-                <div className="size">
-                  <div className="radio-group">
-                    <label>
-                      <input
-                        type="radio"
-                        value="S"
-                        checked={selectedSize === 'S'}
-                        onChange={handleSizeChange}
-                      />
-                      S
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="M"
-                        checked={selectedSize === 'M'}
-                        onChange={handleSizeChange}
-                      />
-                      M
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="L"
-                        checked={selectedSize === 'L'}
-                        onChange={handleSizeChange}
-                      />
-                      L
-                    </label>
+                <div className="category">
+                  <div className="select-group flex justify-between text-gray-900">
+                    <UFilterSelect
+                      title="For Men"
+                      value={categoryFilter}
+                      onChange={e => selectCategory(e)}
+                    />
+                    <UFilterSelect
+                      title="For Women"
+                      value={categoryFilter}
+                      onChange={e => selectCategory(e)}
+                    />
                   </div>
                 </div>
               </div>
@@ -193,8 +190,8 @@ const FilterProducts = () => {
                       <input
                         type="checkbox"
                         value="select"
-                        checked={selectedDiscount}
-                        onChange={handleDiscount}
+                        checked={localSelectedDiscount}
+                        onChange={selectDiscount}
                       />
                       Show only discount products
                     </label>
@@ -206,12 +203,12 @@ const FilterProducts = () => {
                   <UFilterButton
                     isDisabled={
                       !isFilterChange &&
-                      localMinPrice === 0 &&
-                      localMaxPrice === MAX_PRICE
+                      priceFilter.min === 0 &&
+                      priceFilter.max === MAX_PRICE
                     }
                     text="Reset"
                     className="flex items-center"
-                    onClick={handleResetFilter}
+                    onClick={resetFilter}
                   />
                 </div>
                 <div className="apply">
@@ -219,7 +216,7 @@ const FilterProducts = () => {
                     isDisabled={false}
                     text="Apply"
                     className="flex items-center"
-                    onClick={handleApplyFilter}
+                    onClick={applyFilter}
                   />
                 </div>
               </div>

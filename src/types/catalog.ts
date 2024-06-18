@@ -2,8 +2,12 @@ export interface CatalogState {
   cardsList: Card[];
   statusGetAllActsTypes: string;
   errorGetAllActsTypes: string | null;
-  minPrice: number;
-  maxPrice: number;
+  priceRange: {
+    min: number;
+    max: number;
+  };
+  selectedDiscount: boolean;
+  selectedCategory: string;
 }
 
 export interface DataGetCatalogApi {
@@ -20,6 +24,7 @@ export interface DataGetCatalogApi {
         images: ImageUrl[];
         prices: Price[];
       };
+      categories: [{ id: string }];
     };
   };
 }
@@ -28,15 +33,21 @@ export interface ImageUrl {
   url: string;
 }
 
-export interface Price {
+interface Price {
   value: {
     centAmount: number;
   };
+  discounted: {
+    value: {
+      centAmount: number;
+    };
+  };
 }
-
 export interface FilterParams {
   minPrice: number;
   maxPrice: number;
+  selectedDiscount: boolean;
+  selectedCategory: string;
 }
 
 export interface DataImage {
@@ -50,9 +61,28 @@ export interface Card {
   name: string;
   images: ImageUrl[];
   price: number;
+  discount: number;
+  category: string;
 }
 
 export interface ImageModalProps {
   dataImage: DataImage;
   onClose: () => void;
+}
+
+export interface IUFilterSelect {
+  title: string;
+  name?: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+export interface IProductCardProps {
+  description: string;
+  id: string;
+  images: { url: string }[];
+  name: string;
+  price: number;
+  discount: number;
+  onClick: (data: DataImage) => void;
 }

@@ -9,19 +9,23 @@ const initialState: CatalogState = {
   cardsList: [],
   statusGetAllActsTypes: '',
   errorGetAllActsTypes: null,
-  minPrice: 0,
-  maxPrice: MAX_PRICE,
+  priceRange: { min: 0, max: MAX_PRICE },
+  selectedDiscount: false,
+  selectedCategory: '',
 };
 
 const catalogSlice = createSlice({
   name: 'catalog',
   initialState,
   reducers: {
-    setMinPrice: (state, action: PayloadAction<number>) => {
-      state.minPrice = action.payload;
+    setPrice: (state, action: PayloadAction<{ min?: number; max?: number }>) => {
+      state.priceRange = { ...state.priceRange, ...action.payload };
     },
-    setMaxPrice: (state, action: PayloadAction<number>) => {
-      state.maxPrice = action.payload;
+    setSelectedDiscount: (state, action: PayloadAction<boolean>) => {
+      state.selectedDiscount = action.payload;
+    },
+    setSelectedCategory: (state, action: PayloadAction<string>) => {
+      state.selectedCategory = action.payload;
     },
   },
   extraReducers: builder => {
@@ -41,5 +45,6 @@ const catalogSlice = createSlice({
   },
 });
 
-export const { setMinPrice, setMaxPrice } = catalogSlice.actions;
+export const { setPrice, setSelectedDiscount, setSelectedCategory } =
+  catalogSlice.actions;
 export default catalogSlice.reducer;
