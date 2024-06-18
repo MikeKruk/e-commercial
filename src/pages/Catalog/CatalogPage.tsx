@@ -8,7 +8,7 @@ import FilterProducts from '../../components/FilterProducts/FilterProducts';
 
 import { getCatalogApi } from '../../API/requests/catalog';
 import { DataImage } from '../../types/catalog';
-import { MAX_PRICE } from '../../constants/constants';
+import { MAX_PRICE, DISCOUNT_VALUE } from '../../constants/constants';
 import { setPrice, setSelectedCategory } from '../../store/catalog/catalogSlice';
 import ProductCard from '../../components/ProductCard/ProductCard';
 
@@ -25,11 +25,13 @@ const CatalogPage = () => {
   console.log(cardsList);
 
   const filteredCardList = cardsList.filter(item => {
+    console.log(item);
     return (
       item.price >= priceRange.min &&
       item.price <= priceRange.max &&
       (!selectedCategory ||
-        item.description.slice(0, item.description.indexOf(' ')) === selectedCategory)
+        item.description.slice(0, item.description.indexOf(' ')) === selectedCategory) &&
+      (!selectedDiscount || item.discount > DISCOUNT_VALUE)
     );
   });
 

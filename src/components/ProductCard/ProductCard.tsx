@@ -1,5 +1,5 @@
 import { IProductCardProps } from '../../types/catalog';
-import { DISCONT_VALUE } from '../../constants/constants';
+import { DISCOUNT_VALUE } from '../../constants/constants';
 
 const ProductCard: React.FC<IProductCardProps> = ({
   description,
@@ -29,13 +29,13 @@ const ProductCard: React.FC<IProductCardProps> = ({
           {description}
         </p>
         <p className="text-xl font-medium text-gray-900 justify-items-center flex items-center">
-          <span className={price > DISCONT_VALUE ? 'line-through' : ''}>{price}$</span>
-          {price > DISCONT_VALUE && (
+          <span className={price > DISCOUNT_VALUE ? 'line-through' : ''}>{price}$</span>
+          {price > DISCOUNT_VALUE && (
             <span className="text-green-600 ml-2">{discount}$</span>
           )}
         </p>
       </div>
-      {price > DISCONT_VALUE && (
+      {price > DISCOUNT_VALUE && (
         <span className="ml-2 px-2 py-1 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 text-white font-bold rounded-full flex items-center justify-center flex-grow uppercase absolute right-1 top-1">
           sale
         </span>
