@@ -20,7 +20,7 @@ const ProductCard: React.FC<IProductCardProps> = ({
         <img
           src={images[0].url}
           alt={name}
-          className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+          className="h-full w-full object-contain object-center bg-white lg:h-full lg:w-full"
         />
       </div>
       <div className="flex flex-col flex-auto p-2 pt-5 group-hover:cursor-pointer">
