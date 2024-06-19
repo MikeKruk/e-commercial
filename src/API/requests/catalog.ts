@@ -4,11 +4,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../api';
 
 import { Card, DataGetCatalogApi, FilterParams } from '../../types/catalog';
-import { MAX_PRICE } from '../../constants/constants';
+import { MAX_LIMIT, MAX_PRICE } from '../../constants/constants';
+// import getUniqueCategories from '../../utils/getUniqCategories';
 
 const { API_URL, PROJECT_KEY } = process.env;
 
 const getClearObject = (data: DataGetCatalogApi[]) => {
+  // console.log('data', data);
   return data.map(item => {
     return {
       id: item.id,
@@ -16,6 +18,9 @@ const getClearObject = (data: DataGetCatalogApi[]) => {
       name: item.masterData.current.name['en-US'],
       images: item.masterData.current.masterVariant.images,
       price: item.masterData.current.masterVariant.prices[0].value.centAmount / 100,
+      discount:
+        item.masterData.current.masterVariant.prices[0].discounted.value.centAmount / 100,
+      category: item.masterData.current.categories[0].id,
     };
   });
 };
@@ -33,11 +38,12 @@ export const getCatalogApi = createAsyncThunk<Card[], FilterParams>(
     } else if (maxPrice !== MAX_PRICE) {
       queryParams = `filter=variants.price.centAmount:range+(*+to+${maxPrice * 100})`;
     }
+
     let url = `${API_URL}/${PROJECT_KEY}`;
     if (queryParams) {
       url += `/product-projections/search?${queryParams}`;
     } else {
-      url += `/products`;
+      url += `/products?limit=${MAX_LIMIT}`;
     }
 
     const response = await api.get(url);

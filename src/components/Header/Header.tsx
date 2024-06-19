@@ -47,7 +47,7 @@ const Header = () => {
       <div className="flex items-center">
         <img src={logo} alt="logo" className="h-[70px] w-auto" />
       </div>
-      <div>
+      <div className="h-full">
         <div className="flex items-center sm:hidden pr-1 relative z-20 ">
           <button type="button" onClick={toggleMenu} className="text-white text-2xl">
             {menuOpen ? <FaTimes /> : <FaBars />}
