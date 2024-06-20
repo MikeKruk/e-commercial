@@ -14,31 +14,35 @@ import {
   setSelectedDiscount,
 } from '../../store/catalog/catalogSlice';
 import { MAX_PRICE } from '../../constants/constants';
+import { Category } from '../../types/catalog';
 
 const FilterProducts = () => {
   const dispatch = useAppDispatch();
 
-  const { priceRange, selectedCategory } = useAppSelector(state => state.catalog);
+  const { priceRange, selectedCategory, categoriesList, selectedDiscount } =
+    useAppSelector(state => state.catalog);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [localSelectedDiscount, setLocalSelectedDiscount] = useState(false);
+  const [localSelectedDiscount, setLocalSelectedDiscount] = useState(selectedDiscount);
   const [isFilterChange, setIsFilterChange] = useState(false);
-
   const [priceFilter, setPriceFilter] = useState({
     min: priceRange.min,
     max: priceRange.max,
   });
 
-  const [categoryFilter, setCategoryFilter] = useState(selectedCategory);
+  const [categoryFilter, setCategoryFilter] = useState(selectedCategory.name);
+
+  useEffect(() => {
+    if (isOpen) {
+      setPriceFilter({ min: priceRange.min, max: priceRange.max });
+      setCategoryFilter(selectedCategory.name);
+      setLocalSelectedDiscount(selectedDiscount);
+    }
+  }, [isOpen, priceRange, selectedCategory, selectedDiscount]);
 
   const watchFilterState = () => {
     setIsFilterChange(true);
   };
-
-  useEffect(() => {
-    setPriceFilter({ min: priceRange.min, max: priceRange.max });
-    setCategoryFilter(selectedCategory);
-  }, [priceRange, selectedCategory]);
 
   const showOptions = () => {
     setIsOpen(!isOpen);
@@ -78,6 +82,7 @@ const FilterProducts = () => {
 
   const selectDiscount = () => {
     setLocalSelectedDiscount(!localSelectedDiscount);
+    setSelectedDiscount(!localSelectedDiscount);
     watchFilterState();
   };
 
@@ -88,14 +93,24 @@ const FilterProducts = () => {
     setIsFilterChange(false);
     dispatch(setPrice({ min: 0, max: MAX_PRICE }));
     dispatch(setSelectedDiscount(false));
-    dispatch(setSelectedCategory(''));
+    dispatch(setSelectedCategory({ name: '', id: '' }));
+    closeOptions();
   };
+
+  const getCategoryId = (array: Category[]) =>
+    array.filter(category => category.name['en-US'] === categoryFilter)[0].id;
 
   const applyFilter = () => {
     dispatch(setPrice({ min: priceFilter.min, max: priceFilter.max }));
     dispatch(setSelectedDiscount(localSelectedDiscount));
-    dispatch(setSelectedCategory('f5c07eb9-0119-43c4-84db-1248bfb2f9a8'));
-    setIsOpen(false);
+    categoryFilter &&
+      dispatch(
+        setSelectedCategory({
+          name: categoryFilter,
+          id: getCategoryId(categoriesList),
+        }),
+      );
+    closeOptions();
   };
 
   const sidebarRef = useRef<HTMLDivElement>(null);

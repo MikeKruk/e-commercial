@@ -7,9 +7,11 @@ import { useBodyClass } from '../../store/catalog/hooks';
 import FilterProducts from '../../components/FilterProducts/FilterProducts';
 import SortProducts from '../../components/SortProducts/SortProducts';
 
-import { getCatalogApi } from '../../API/requests/catalog';
+import { getCatalogApi, getCategoriesApi } from '../../API/requests/catalog';
 import { DataImage } from '../../types/catalog';
 import { MAX_PRICE } from '../../constants/constants';
+import getSortedCardsList from '../../utils/getSortedCardsList';
+
 import {
   setPrice,
   setSelectedCategory,
@@ -24,10 +26,6 @@ const CatalogPage = () => {
     useAppSelector(state => state.catalog);
 
   useEffect(() => {
-    console.log('CatalogPage state cardsList', cardsList);
-  }, [cardsList]);
-
-  useEffect(() => {
     dispatch(
       getCatalogApi({
         minPrice: priceRange.min,
@@ -39,6 +37,12 @@ const CatalogPage = () => {
     );
   }, [priceRange, selectedDiscount, selectedCategory, sortedValue, dispatch]);
 
+  const cards = getSortedCardsList(cardsList, sortedValue);
+
+  useEffect(() => {
+    dispatch(getCategoriesApi());
+  }, [dispatch]);
+
   const openImageSlider = (data: DataImage) => {
     setDataImage(data);
   };
@@ -48,13 +52,13 @@ const CatalogPage = () => {
   };
 
   const resetPriceFilter = () => dispatch(setPrice({ min: 0, max: MAX_PRICE }));
-  const resetCategoryFilter = () => dispatch(setSelectedCategory(''));
+  const resetCategoryFilter = () => dispatch(setSelectedCategory({ name: '', id: '' }));
   const resetDiscountFilter = () => dispatch(setSelectedDiscount(false));
 
   useBodyClass('lock', !!dataImage);
 
   const hasPriceFilter = priceRange.min > 0 || priceRange.max < MAX_PRICE;
-  const hasCategoryFilter = !!selectedCategory;
+  const hasCategoryFilter = !!selectedCategory.name;
   const hasDiscountFilter = selectedDiscount;
 
   return (
@@ -83,7 +87,7 @@ const CatalogPage = () => {
               {hasCategoryFilter && (
                 <div className="rounded-full bg-gray-700 px-4 py-1 flex justify-between gap-5 items-center">
                   <span className="text-sm font-medium text-white">
-                    Category: {selectedCategory}
+                    Category: {selectedCategory.name}
                   </span>
                   <button
                     type="button"
@@ -119,14 +123,14 @@ const CatalogPage = () => {
             <div className="filter-results">
               <h3>Results:</h3>
               <span className="text-sm font-medium text-gray-600">
-                {cardsList.length} products found
+                {cards.length} products found
               </span>
             </div>
           )}
         </h2>
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {cardsList.map(product => (
+          {cards.map(product => (
             <ProductCard
               key={product.id}
               description={product.description}

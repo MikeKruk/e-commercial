@@ -3,13 +3,23 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import api from '../api';
 
-import { Card, DataGetCatalogApi, FilterParams } from '../../types/catalog';
-import { MAX_LIMIT, MAX_PRICE, SORT_TITLES } from '../../constants/constants';
+import {
+  Card,
+  Category,
+  DataGetCatalogApi,
+  DataGetCategoryApi,
+  FilterParams,
+} from '../../types/catalog';
+import {
+  MAX_LIMIT,
+  SORT_TITLES,
+  MAX_PRICE,
+  DISCOUNT_VALUE,
+} from '../../constants/constants';
 
 const { API_URL, PROJECT_KEY } = process.env;
 
 const getClearObject = (data: DataGetCatalogApi[]) => {
-  console.log('getClearObjectdata', data);
   return data.map(item => {
     return {
       id: item.id,
@@ -23,11 +33,23 @@ const getClearObject = (data: DataGetCatalogApi[]) => {
   });
 };
 
+const getClearCategory = (data: DataGetCategoryApi[]) => {
+  return data.map(category => {
+    return {
+      id: category.id,
+      description: { 'en-US': category.description['en-US'] },
+      name: { 'en-US': category.name['en-US'] },
+      key: category.key,
+    };
+  });
+};
+
 export const getCatalogApi = createAsyncThunk<Card[], FilterParams>(
   'catalog/getCatalogApi',
 
   async (filterParams: FilterParams) => {
-    const { minPrice, maxPrice, sortedValue, selectedCategory } = filterParams;
+    const { maxPrice, minPrice, sortedValue, selectedCategory, selectedDiscount } =
+      filterParams;
     let queryParams = '';
     if (minPrice > 0 && maxPrice !== MAX_PRICE) {
       queryParams += `&filter=variants.price.centAmount:range+(${minPrice * 100}+to+${maxPrice * 100})`;
@@ -37,8 +59,12 @@ export const getCatalogApi = createAsyncThunk<Card[], FilterParams>(
       queryParams += `&filter=variants.price.centAmount:range+(*+to+${maxPrice * 100})`;
     }
 
-    if (selectedCategory) {
-      queryParams += `&filter=categories.id:${selectedCategory}`;
+    if (selectedDiscount) {
+      queryParams += `&filter=variants.price.centAmount:range+(${DISCOUNT_VALUE * 100}+to+${MAX_PRICE * 100})`;
+    }
+
+    if (selectedCategory.id) {
+      queryParams += `&filter=categories.id:+subtree(%22${selectedCategory.id}%22)`;
     }
 
     if (sortedValue && sortedValue === SORT_TITLES.BY_PRICE_ASC) {
@@ -59,6 +85,16 @@ export const getCatalogApi = createAsyncThunk<Card[], FilterParams>(
     const response = await api.get(url);
     const data = getClearObject(response.data.results);
 
+    return data;
+  },
+);
+
+export const getCategoriesApi = createAsyncThunk<Category[]>(
+  'catalog/getCategoriesApi',
+  async () => {
+    const url = `${API_URL}/${PROJECT_KEY}/categories`;
+    const response = await api.get(url);
+    const data = getClearCategory(response.data.results);
     return data;
   },
 );

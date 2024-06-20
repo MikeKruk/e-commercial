@@ -15,7 +15,7 @@ const ProductCard: React.FC<IProductCardProps> = ({
       className="group flex flex-col rounded-md border-2 relative"
       onClick={() => onClick({ images, id })}
     >
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:cursor-pointer group-hover:opacity-75 lg:h-80">
+      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:cursor-pointer group-hover:opacity-75 group-hover: lg:h-80">
         <img
           src={images[0].url}
           alt={name}

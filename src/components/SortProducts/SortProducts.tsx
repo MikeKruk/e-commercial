@@ -28,7 +28,12 @@ const SortProducts = () => {
 
   return (
     <div className="relative" ref={sortRef}>
-      <button type="button" aria-label="sort" className="sort-btn" onClick={showOptions}>
+      <button
+        type="button"
+        aria-label="sort"
+        className={`sort-btn ${sortValue === SORT_TITLES.NO_SORTING ? 'bg-white' : 'bg-gray-400'}`}
+        onClick={showOptions}
+      >
         <FaSort fill="#374151" />
       </button>
       {isSortOpen && (
