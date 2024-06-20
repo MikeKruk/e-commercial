@@ -5,10 +5,11 @@ import ImageModal from '../../components/ImageModal/ImageModal';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useBodyClass } from '../../store/catalog/hooks';
 import FilterProducts from '../../components/FilterProducts/FilterProducts';
+import SortProducts from '../../components/SortProducts/SortProducts';
 
 import { getCatalogApi } from '../../API/requests/catalog';
 import { DataImage } from '../../types/catalog';
-import { MAX_PRICE, DISCOUNT_VALUE } from '../../constants/constants';
+import { MAX_PRICE } from '../../constants/constants';
 import {
   setPrice,
   setSelectedCategory,
@@ -19,23 +20,12 @@ import ProductCard from '../../components/ProductCard/ProductCard';
 const CatalogPage = () => {
   const [dataImage, setDataImage] = useState<DataImage | null>(null);
   const dispatch = useAppDispatch();
-  const {
-    cardsList,
-    priceRange,
-    selectedDiscount,
-    statusGetAllActsTypes,
-    selectedCategory,
-  } = useAppSelector(state => state.catalog);
+  const { cardsList, priceRange, selectedDiscount, selectedCategory, sortedValue } =
+    useAppSelector(state => state.catalog);
 
-  const filteredCardList = cardsList.filter(item => {
-    return (
-      item.price >= priceRange.min &&
-      item.price <= priceRange.max &&
-      (!selectedCategory ||
-        item.description.slice(0, item.description.indexOf(' ')) === selectedCategory) &&
-      (!selectedDiscount || item.discount > DISCOUNT_VALUE)
-    );
-  });
+  useEffect(() => {
+    console.log('CatalogPage state cardsList', cardsList);
+  }, [cardsList]);
 
   useEffect(() => {
     dispatch(
@@ -44,9 +34,10 @@ const CatalogPage = () => {
         maxPrice: priceRange.max,
         selectedDiscount,
         selectedCategory,
+        sortedValue,
       }),
     );
-  }, [priceRange, selectedDiscount, selectedCategory, dispatch]);
+  }, [priceRange, selectedDiscount, selectedCategory, sortedValue, dispatch]);
 
   const openImageSlider = (data: DataImage) => {
     setDataImage(data);
@@ -62,19 +53,15 @@ const CatalogPage = () => {
 
   useBodyClass('lock', !!dataImage);
 
-  if (statusGetAllActsTypes === 'loading') {
-    console.log('loading');
-    // потом можно будет добавить спинер
-  }
-
   const hasPriceFilter = priceRange.min > 0 || priceRange.max < MAX_PRICE;
   const hasCategoryFilter = !!selectedCategory;
   const hasDiscountFilter = selectedDiscount;
 
   return (
-    <div className="bg-white">
+    <div>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 position: relative">
         <div className="flex gap-5 items-center mb-5">
+          <SortProducts />
           <FilterProducts />
           {(hasPriceFilter || hasCategoryFilter || hasDiscountFilter) && (
             <div className="flex flex-wrap gap-5">
@@ -126,21 +113,22 @@ const CatalogPage = () => {
         </div>
 
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-          {cardsList.length === filteredCardList.length ? (
+          {!(hasPriceFilter || hasCategoryFilter || hasDiscountFilter) ? (
             <span>Customers also purchased</span>
           ) : (
             <div className="filter-results">
               <h3>Results:</h3>
               <span className="text-sm font-medium text-gray-600">
-                {filteredCardList.length} products found
+                {cardsList.length} products found
               </span>
             </div>
           )}
         </h2>
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {filteredCardList.map(product => (
+          {cardsList.map(product => (
             <ProductCard
+              key={product.id}
               description={product.description}
               id={product.id}
               images={product.images}

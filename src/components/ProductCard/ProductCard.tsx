@@ -12,7 +12,6 @@ const ProductCard: React.FC<IProductCardProps> = ({
 }) => {
   return (
     <div
-      key={id}
       className="group flex flex-col rounded-md border-2 relative"
       onClick={() => onClick({ images, id })}
     >

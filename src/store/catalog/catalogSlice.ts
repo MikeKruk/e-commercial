@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getCatalogApi } from '../../API/requests/catalog';
 
 import { CatalogState } from '../../types/catalog';
-import { MAX_PRICE } from '../../constants/constants';
+import { MAX_PRICE, SORT_TITLES } from '../../constants/constants';
 
 const initialState: CatalogState = {
   cardsList: [],
@@ -12,6 +12,7 @@ const initialState: CatalogState = {
   priceRange: { min: 0, max: MAX_PRICE },
   selectedDiscount: false,
   selectedCategory: '',
+  sortedValue: SORT_TITLES.NO_SORTING,
 };
 
 const catalogSlice = createSlice({
@@ -26,6 +27,9 @@ const catalogSlice = createSlice({
     },
     setSelectedCategory: (state, action: PayloadAction<string>) => {
       state.selectedCategory = action.payload;
+    },
+    setSortedValue: (state, action: PayloadAction<string>) => {
+      state.sortedValue = action.payload;
     },
   },
   extraReducers: builder => {
@@ -45,6 +49,6 @@ const catalogSlice = createSlice({
   },
 });
 
-export const { setPrice, setSelectedDiscount, setSelectedCategory } =
+export const { setPrice, setSelectedDiscount, setSelectedCategory, setSortedValue } =
   catalogSlice.actions;
 export default catalogSlice.reducer;

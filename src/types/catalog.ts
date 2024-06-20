@@ -8,25 +8,41 @@ export interface CatalogState {
   };
   selectedDiscount: boolean;
   selectedCategory: string;
+  sortedValue: string;
 }
+
+// export interface DataGetCatalogApi {
+//   id: string;
+//   masterData: {
+//     current: {
+//       description: {
+//         'en-US': string;
+//       };
+//       name: {
+//         'en-US': string;
+//       };
+//       masterVariant: {
+//         images: ImageUrl[];
+//         prices: Price[];
+//       };
+//       categories: [{ id: string }];
+//     };
+//   };
+// }
 
 export interface DataGetCatalogApi {
   id: string;
-  masterData: {
-    current: {
-      description: {
-        'en-US': string;
-      };
-      name: {
-        'en-US': string;
-      };
-      masterVariant: {
-        images: ImageUrl[];
-        prices: Price[];
-      };
-      categories: [{ id: string }];
-    };
+  description: {
+    'en-US': string;
   };
+  name: {
+    'en-US': string;
+  };
+  masterVariant: {
+    images: ImageUrl[];
+    prices: Price[];
+  };
+  categories: [{ id: string }];
 }
 
 export interface ImageUrl {
@@ -48,6 +64,7 @@ export interface FilterParams {
   maxPrice: number;
   selectedDiscount: boolean;
   selectedCategory: string;
+  sortedValue: string;
 }
 
 export interface DataImage {
@@ -85,4 +102,5 @@ export interface IProductCardProps {
   price: number;
   discount: number;
   onClick: (data: DataImage) => void;
+  key: string;
 }

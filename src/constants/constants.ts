@@ -13,4 +13,19 @@ const MAX_PRICE = 150;
 const DISCOUNT_VALUE = 35;
 const MAX_LIMIT = 75;
 
-export { LSTokens, EMAIL_REGEX, PASSWORD_REGEX, MAX_PRICE, DISCOUNT_VALUE, MAX_LIMIT };
+const SORT_TITLES = {
+  NO_SORTING: 'No Sorting',
+  BY_NAME: 'By Name',
+  BY_PRICE_ASC: 'By Price (Ascending)',
+  BY_PRICE_DESC: 'By Price (Descending)',
+};
+
+export {
+  LSTokens,
+  EMAIL_REGEX,
+  PASSWORD_REGEX,
+  MAX_PRICE,
+  DISCOUNT_VALUE,
+  MAX_LIMIT,
+  SORT_TITLES,
+};

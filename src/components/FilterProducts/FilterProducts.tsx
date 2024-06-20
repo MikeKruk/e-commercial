@@ -94,7 +94,7 @@ const FilterProducts = () => {
   const applyFilter = () => {
     dispatch(setPrice({ min: priceFilter.min, max: priceFilter.max }));
     dispatch(setSelectedDiscount(localSelectedDiscount));
-    dispatch(setSelectedCategory(categoryFilter));
+    dispatch(setSelectedCategory('f5c07eb9-0119-43c4-84db-1248bfb2f9a8'));
     setIsOpen(false);
   };
 
