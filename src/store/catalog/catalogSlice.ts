@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getCatalogApi } from '../../API/requests/catalog';
+import { getCatalogApi, getCategoriesApi } from '../../API/requests/catalog';
 
 import { CatalogState } from '../../types/catalog';
-import { MAX_PRICE } from '../../constants/constants';
+import { MAX_PRICE, SORT_TITLES } from '../../constants/constants';
 
 const initialState: CatalogState = {
   cardsList: [],
@@ -11,7 +11,9 @@ const initialState: CatalogState = {
   errorGetAllActsTypes: null,
   priceRange: { min: 0, max: MAX_PRICE },
   selectedDiscount: false,
-  selectedCategory: '',
+  selectedCategory: { name: '', id: '' },
+  sortedValue: SORT_TITLES.NO_SORTING,
+  categoriesList: [],
 };
 
 const catalogSlice = createSlice({
@@ -24,8 +26,14 @@ const catalogSlice = createSlice({
     setSelectedDiscount: (state, action: PayloadAction<boolean>) => {
       state.selectedDiscount = action.payload;
     },
-    setSelectedCategory: (state, action: PayloadAction<string>) => {
+    setSelectedCategory: (state, action: PayloadAction<{ name: string; id: string }>) => {
       state.selectedCategory = action.payload;
+    },
+    setSortedValue: (state, action: PayloadAction<string>) => {
+      state.sortedValue = action.payload;
+    },
+    setCategoties: (state, action: PayloadAction<string>) => {
+      state.sortedValue = action.payload;
     },
   },
   extraReducers: builder => {
@@ -41,10 +49,22 @@ const catalogSlice = createSlice({
       .addCase(getCatalogApi.rejected, (state, action) => {
         state.statusGetAllActsTypes = 'failed';
         state.errorGetAllActsTypes = action.error.message ?? null;
+      })
+      .addCase(getCategoriesApi.pending, state => {
+        state.statusGetAllActsTypes = 'loading';
+        state.errorGetAllActsTypes = null;
+      })
+      .addCase(getCategoriesApi.fulfilled, (state, action) => {
+        state.statusGetAllActsTypes = 'succeeded';
+        state.categoriesList = action.payload;
+      })
+      .addCase(getCategoriesApi.rejected, (state, action) => {
+        state.statusGetAllActsTypes = 'failed';
+        state.errorGetAllActsTypes = action.error.message ?? null;
       });
   },
 });
 
-export const { setPrice, setSelectedDiscount, setSelectedCategory } =
+export const { setPrice, setSelectedDiscount, setSelectedCategory, setSortedValue } =
   catalogSlice.actions;
 export default catalogSlice.reducer;

@@ -1,7 +1,7 @@
 import { IUFilterSelect } from '../../../types/catalog';
 
-const itemsForMen = ['T-shirts', 'Suits', 'Jackets', 'Shoes'];
 const itemsForWomen = ['Boots', 'Dresses', 'Shirts', 'Bags'];
+const itemsForMen = ['T-shirts', 'Suits', 'Jackets', 'Shoes'];
 
 function UFilterSelect({ title, name = '', value, onChange }: IUFilterSelect) {
   const itemsToRender = title === 'For Men' ? itemsForMen : itemsForWomen;

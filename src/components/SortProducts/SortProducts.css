@@ -1,0 +1,16 @@
+.sort-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px;
+  transition: all 0.2s linear;
+}
+
+.sort-btn:hover {
+  background-color: #dedbdb;
+}
