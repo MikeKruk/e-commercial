@@ -2,6 +2,10 @@ body {
   background-color: #eee;
 }
 
+.lock {
+  overflow: hidden;
+}
+
 /* #root {
   max-width: 1280px;
   margin: 0 auto;

@@ -1,68 +1,80 @@
-// const userSlice = createSlice({
-//   name: 'user',
-//   initialState: {
-//     currentUser: [],
-//     cart: [],
-//   },
-//   reducers: {
-//     addItemToCart: (state, {payload}) => {
-//         let newCart = [...state.cart];
-//         const found state.cart.find(({id}) => {
-//             id === payload.id
-//         })
-//         if(found) {
-//             newCart.map((item) => {
-//                 return item.id === payload.id
-//                 ? {...item, quantity: payload.quantity || item.quantity + 1}
-//                 : item
-//             }) else {
-//                newCart.push({payload, quantity: 1})
-//             }
-//         }
-//         state.cart = newCart
-//     }
-//   },
-
-// });
-
-// export const {addItemToCart} = userSlice.actions
-
-// export default userSlice.reducer
-
-import type { PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
+// import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { AppState } from '..';
+// import type { AppState } from '..';
+import user from '../../API/requests/user';
+import { IUserState } from '../../types/user';
 
-export interface UserState {
-  currentUser: string | null;
-  cart: string[];
-}
-
-const initialState: UserState = {
+const initialState: IUserState = {
+  loading: 'idle',
+  accessToken: null,
   currentUser: null,
-  cart: [],
+  statusGetAllActsTypes: '',
+  errorGetAllActsTypes: null,
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    addUser: (state, action: PayloadAction<string>) => {
-      // eslint-disable-next-line no-param-reassign
-      state.currentUser = action.payload;
-    },
-    resetUser: state => {
-      // eslint-disable-next-line no-param-reassign
-      state.currentUser = null;
-    },
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(user.getAnonymousToken.pending, state => {
+        state.statusGetAllActsTypes = 'loading';
+        state.errorGetAllActsTypes = null;
+      })
+      .addCase(user.getAnonymousToken.fulfilled, (state, action) => {
+        state.statusGetAllActsTypes = 'succeeded';
+        state.accessToken = action.payload;
+      })
+      .addCase(user.getAnonymousToken.rejected, (state, action) => {
+        state.statusGetAllActsTypes = 'failed';
+        state.errorGetAllActsTypes = action.error.message ?? null;
+      })
+      .addCase(user.getCustomerToken.pending, state => {
+        state.statusGetAllActsTypes = 'loading';
+        state.errorGetAllActsTypes = null;
+      })
+      .addCase(user.getCustomerToken.fulfilled, (state, action) => {
+        state.statusGetAllActsTypes = 'succeeded';
+        state.accessToken = action.payload;
+      })
+      .addCase(user.getCustomerToken.rejected, (state, action) => {
+        state.statusGetAllActsTypes = 'failed';
+        state.errorGetAllActsTypes = action.error.message ?? null;
+      })
+      .addCase(user.createUser.pending, state => {
+        state.statusGetAllActsTypes = 'loading';
+        state.errorGetAllActsTypes = null;
+      })
+      .addCase(user.createUser.fulfilled, (state, action) => {
+        state.statusGetAllActsTypes = 'succeeded';
+        state.currentUser = action.payload;
+      })
+      .addCase(user.createUser.rejected, (state, action) => {
+        state.statusGetAllActsTypes = 'failed';
+        state.errorGetAllActsTypes = action.error.message ?? null;
+      })
+      .addCase(user.loginUser.pending, state => {
+        state.statusGetAllActsTypes = 'loading';
+        state.errorGetAllActsTypes = null;
+      })
+      .addCase(user.loginUser.fulfilled, (state, action) => {
+        state.statusGetAllActsTypes = 'succeeded';
+        state.currentUser = action.payload;
+      })
+      .addCase(user.loginUser.rejected, (state, action) => {
+        state.statusGetAllActsTypes = 'failed';
+        state.errorGetAllActsTypes = action.error.message ?? null;
+      });
   },
 });
 
-export const { addUser, resetUser } = userSlice.actions;
+// export const { addUser, resetUser } = userSlice.actions;
 
 export default userSlice.reducer;
 
 /* Selectors */
 
-export const selectCurrentUser = (state: AppState) => state.user.currentUser;
+// export const selectCurrentUser = (state: AppState) => state.user.currentUser;

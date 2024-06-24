@@ -22,6 +22,6 @@
 
     "types": ["vitest/globals", "node"]
   },
-  "include": ["src", ".eslintrc.cjs", "vite.config.json"],
+  "include": ["src", ".eslintrc.cjs", "vite.config.json", "src/API"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

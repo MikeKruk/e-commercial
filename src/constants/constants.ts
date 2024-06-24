@@ -1,11 +1,31 @@
 const LSTokens = {
   ACCESS_TOKEN: 'access_token',
   REFRESH_TOKEN: 'refresh_token',
+  ANONYMOUS_TOKEN: 'anonymous_token',
 };
 
-export const PASSWORD_REGEX =
+const PASSWORD_REGEX =
   /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
 
-export const EMAIL_REGEX = /^s*[a-zA-Z0-9._%+-/]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}s*$/;
+const EMAIL_REGEX = /^s*[a-zA-Z0-9._%+-/]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}s*$/;
 
-export default LSTokens;
+const MAX_PRICE = 150;
+const DISCOUNT_VALUE = 35;
+const MAX_LIMIT = 75;
+
+const SORT_TITLES = {
+  NO_SORTING: 'No Sorting',
+  BY_NAME: 'By Name',
+  BY_PRICE_ASC: 'By Price (Ascending)',
+  BY_PRICE_DESC: 'By Price (Descending)',
+};
+
+export {
+  LSTokens,
+  EMAIL_REGEX,
+  PASSWORD_REGEX,
+  MAX_PRICE,
+  DISCOUNT_VALUE,
+  MAX_LIMIT,
+  SORT_TITLES,
+};

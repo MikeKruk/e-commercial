@@ -8,7 +8,7 @@ import { store } from './store';
 function App() {
   return (
     <Provider store={store}>
-      <div className="">
+      <div className="bg-whitesmoke">
         <Header />
         <AppRoutes />;
       </div>
