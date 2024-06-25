@@ -1,5 +1,6 @@
 export interface CatalogState {
   cardsList: Card[];
+  searchCardsList: Card[];
   statusGetAllActsTypes: string;
   errorGetAllActsTypes: string | null;
   priceRange: {
@@ -10,6 +11,7 @@ export interface CatalogState {
   selectedCategory: { name: string; id: string };
   sortedValue: string;
   categoriesList: Category[];
+  searchValue: string;
 }
 
 export interface Category {
@@ -63,12 +65,14 @@ interface Price {
     };
   };
 }
+
 export interface FilterParams {
   minPrice: number;
   maxPrice: number;
   selectedDiscount: boolean;
   selectedCategory: { name: string; id: string };
   sortedValue: string;
+  searchValue?: string;
 }
 
 export interface DataImage {
