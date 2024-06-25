@@ -81,7 +81,7 @@ export const getCatalogApi = createAsyncThunk<Card[], FilterParams>(
     if (queryParams) {
       url += `${queryParams}`;
     }
-
+    console.log(queryParams);
     const response = await api.get(url);
     const data = getClearObject(response.data.results);
 
@@ -95,6 +95,54 @@ export const getCategoriesApi = createAsyncThunk<Category[]>(
     const url = `${API_URL}/${PROJECT_KEY}/categories`;
     const response = await api.get(url);
     const data = getClearCategory(response.data.results);
+    return data;
+  },
+);
+
+export const getSearchProductsApi = createAsyncThunk<Card[], FilterParams>(
+  'catalog/getSearchProducts',
+  async (filterParams: FilterParams) => {
+    const {
+      maxPrice,
+      minPrice,
+      sortedValue,
+      selectedCategory,
+      selectedDiscount,
+      searchValue,
+    } = filterParams;
+    let queryParams = '';
+    if (minPrice > 0 && maxPrice !== MAX_PRICE) {
+      queryParams += `&filter=variants.price.centAmount:range+(${minPrice * 100}+to+${maxPrice * 100})`;
+    } else if (minPrice > 0) {
+      queryParams += `&filter=variants.price.centAmount:range+(${minPrice * 100}+to+*)`;
+    } else if (maxPrice !== MAX_PRICE) {
+      queryParams += `&filter=variants.price.centAmount:range+(*+to+${maxPrice * 100})`;
+    }
+
+    if (selectedDiscount) {
+      queryParams += `&filter=variants.price.centAmount:range+(${DISCOUNT_VALUE * 100}+to+${MAX_PRICE * 100})`;
+    }
+
+    if (selectedCategory.id) {
+      queryParams += `&filter=categories.id:+subtree(%22${selectedCategory.id}%22)`;
+    }
+
+    if (sortedValue && sortedValue === SORT_TITLES.BY_PRICE_ASC) {
+      queryParams += `&sort=price+asc`;
+    }
+    if (sortedValue && sortedValue === SORT_TITLES.BY_PRICE_DESC) {
+      queryParams += `&sort=price+desc`;
+    }
+    if (sortedValue && sortedValue === SORT_TITLES.BY_NAME) {
+      queryParams += `&sort=name.en-US+asc`;
+    }
+
+    let url = `${API_URL}/${PROJECT_KEY}/product-projections/search?limit=${MAX_LIMIT}&markMatchingVariants=true&fuzzy=true&text.en-US=${searchValue}`;
+    if (queryParams) {
+      url += `${queryParams}`;
+    }
+    const response = await api.get(url);
+    const data = getClearObject(response.data.results);
     return data;
   },
 );
